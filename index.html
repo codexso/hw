@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Handwriting Generator ULTIMATE</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: linear-gradient(135deg,#dfe9f3,#ffffff);
+    }
+
+    input, button, select {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button { background:black; color:white; }
+
+    .page {
+      width: 794px;
+      height: 1123px;
+      background: white;
+      margin: 20px auto;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+
+    /* margin line */
+    .page::before {
+      content:"";
+      position:absolute;
+      left:60px;
+      top:0;
+      width:2px;
+      height:100%;
+      background:red;
+    }
+
+    /* paper styles */
+    .single {
+      background-image: repeating-linear-gradient(
+        to bottom, white 0px, white 28px, #4a90e2 29px
+      );
+    }
+
+    .double {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        #ffb3b3 0px,#ffb3b3 2px,
+        white 2px,white 20px,
+        #4a90e2 21px
+      );
+    }
+
+    .grid {
+      background-image:
+        repeating-linear-gradient(to right,#ddd 0,#ddd 1px,transparent 1px,transparent 25px),
+        repeating-linear-gradient(to bottom,#ddd 0,#ddd 1px,transparent 1px,transparent 25px);
+    }
+
+    canvas {
+      border:2px dashed black;
+      background:white;
+      margin-top:10px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<h2>✍️ Handwriting Generator ULTIMATE</h2>
+
+<input id="textInput" placeholder="Enter text">
+
+<select id="paperStyle">
+  <option value="single">Single</option>
+  <option value="double">Double</option>
+  <option value="grid">Grid</option>
+</select>
+
+<br>
+
+<label>Line Spacing:</label> <input type="range" id="spacing" min="20" max="60" value="30">
+
+<br>
+
+<button onclick="generate()">Generate</button> <button onclick="exportPDF()">Export PDF</button>
+
+<div id="pages"></div>
+
+<!-- DRAW -->
+
+<h3>Draw Letter</h3>
+<canvas id="drawCanvas" width="200" height="200"></canvas><br>
+<input id="charInput" placeholder="Letter">
+<button onclick="saveLetter()">Save</button>
+
+<!-- WRITE -->
+
+<h3>Write Full</h3>
+<canvas id="writeCanvas" width="600" height="200"></canvas><br>
+<input id="writeText">
+<button onclick="processWriting()">Convert</button>
+
+<script>
+// ===== DRAW LETTER =====
+const ctx=document.getElementById("drawCanvas").getContext("2d");
+let d=false;
+drawCanvas.onmousedown=()=>d=true;
+drawCanvas.onmouseup=()=>{d=false;ctx.beginPath();}
+drawCanvas.onmousemove=e=>{
+ if(!d)return;
+ ctx.lineWidth=3;
+ ctx.lineTo(e.offsetX,e.offsetY);
+ ctx.stroke();
+ ctx.beginPath();
+ ctx.moveTo(e.offsetX,e.offsetY);
+};
+
+function saveLetter(){
+ let c=charInput.value;
+ if(!c)return;
+ localStorage.setItem("char_"+c,drawCanvas.toDataURL());
+}
+
+// ===== GENERATE =====
+function generate(){
+  const text=textInput.value;
+  const spacing=parseInt(spacingInput());
+  const style=paperStyle.value;
+
+  const pagesDiv=document.getElementById("pages");
+  pagesDiv.innerHTML="";
+
+  let page=createPage(style,spacing);
+  pagesDiv.appendChild(page);
+
+  let x=0,y=0;
+  const maxW=700,maxH=1000;
+
+  [...text].forEach(ch=>{
+    const data=localStorage.getItem("char_"+ch);
+
+    let img=document.createElement("img");
+    img.src=data||"";
+    img.style.height="30px";
+    img.style.position="absolute";
+
+    // baseline alignment
+    img.style.top=(y*spacing+20)+"px";
+    img.style.left=(x+70)+"px";
+
+    page.appendChild(img);
+
+    x+=25;
+
+    if(x>maxW){
+      x=0;
+      y++;
+    }
+
+    if(y*spacing>maxH){
+      page=createPage(style,spacing);
+      pagesDiv.appendChild(page);
+      x=0;y=0;
+    }
+  });
+}
+
+function spacingInput(){
+  return document.getElementById("spacing").value;
+}
+
+// ===== CREATE PAGE =====
+function createPage(style,spacing){
+  let page=document.createElement("div");
+  page.className="page "+style;
+  return page;
+}
+
+// ===== PDF MULTI PAGE =====
+function exportPDF(){
+  const { jsPDF } = window.jspdf;
+  let doc=new jsPDF();
+
+  const pages=document.querySelectorAll(".page");
+
+  let i=0;
+
+  function addPage(){
+    if(i>=pages.length){
+      doc.save("notebook.pdf");
+      return;
+    }
+
+    doc.html(pages[i],{
+      callback:function(){
+        if(i<pages.length-1) doc.addPage();
+        i++;
+        addPage();
+      }
+    });
+  }
+
+  addPage();
+}
+
+// ===== WRITE FULL =====
+const wctx=document.getElementById("writeCanvas").getContext("2d");
+let wd=false;
+
+writeCanvas.onmousedown=()=>wd=true;
+writeCanvas.onmouseup=()=>{wd=false;wctx.beginPath();}
+writeCanvas.onmousemove=e=>{
+ if(!wd)return;
+ wctx.lineWidth=3;
+ wctx.lineTo(e.offsetX,e.offsetY);
+ wctx.stroke();
+ wctx.beginPath();
+ wctx.moveTo(e.offsetX,e.offsetY);
+};
+
+function processWriting(){
+  let text=writeText.value;
+  let img=wctx.getImageData(0,0,600,200).data;
+
+  let cols=[];
+  for(let x=0;x<600;x++){
+    let ink=false;
+    for(let y=0;y<200;y++){
+      if(img[(y*600+x)*4+3]>10){ink=true;break;}
+    }
+    cols.push(ink);
+  }
+
+  let seg=[],inL=false,start=0;
+
+  for(let i=0;i<cols.length;i++){
+    if(cols[i]&&!inL){start=i;inL=true;}
+    else if(!cols[i]&&inL){seg.push([start,i]);inL=false;}
+  }
+
+  seg.forEach((s,i)=>{
+    let ch=text[i];
+    if(!ch)return;
+
+    let c=document.createElement("canvas");
+    c.width=s[1]-s[0];
+    c.height=200;
+
+    c.getContext("2d").drawImage(writeCanvas,
+      s[0],0,c.width,200,0,0,c.width,200);
+
+    localStorage.setItem("char_"+ch,c.toDataURL());
+  });
+
+  alert("Converted!");
+}
+</script>
+
+</body>
+</html>
