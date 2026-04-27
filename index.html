@@ -78,80 +78,148 @@ canvas { width:95%; border:2px dashed black; }
 
 <script>
 // ===== DRAW =====
-const ctx=drawCanvas.getContext("2d");
-let d=false;
-
-drawCanvas.onmousedown=()=>d=true;
-drawCanvas.onmouseup=()=>{d=false;ctx.beginPath();}
-drawCanvas.onmousemove=e=>{
- if(!d)return;
- ctx.lineWidth=3;
- ctx.lineTo(e.offsetX,e.offsetY);
- ctx.stroke();
- ctx.beginPath();
- ctx.moveTo(e.offsetX,e.offsetY);
+// ===== SETTINGS (REAL PAPER SYSTEM) =====
+const PAPER = {
+  A4: { width: 210, height: 297 },
+  A5: { width: 148, height: 210 },
+  Letter: { width: 216, height: 279 }
 };
 
+const DPI = 3.78; // px per mm
+
+// ===== DRAW (FIXED FOR MOBILE) =====
+function setupCanvas(canvas) {
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return {
+      x: t.clientX - rect.left,
+      y: t.clientY - rect.top
+    };
+  }
+
+  canvas.addEventListener("mousedown", () => drawing = true);
+  canvas.addEventListener("mouseup", () => {
+    drawing = false;
+    ctx.beginPath();
+  });
+
+  canvas.addEventListener("mousemove", (e) => {
+    if (!drawing) return;
+    const p = getPos(e);
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  });
+
+  canvas.addEventListener("touchstart", () => drawing = true);
+  canvas.addEventListener("touchend", () => {
+    drawing = false;
+    ctx.beginPath();
+  });
+
+  canvas.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+    if (!drawing) return;
+    const p = getPos(e);
+    ctx.lineWidth = 3;
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  });
+
+  return ctx;
+}
+
+const ctx = setupCanvas(drawCanvas);
+
 // ===== SAVE LETTER =====
-function saveLetter(){
- localStorage.setItem("char_"+charInput.value,drawCanvas.toDataURL());
+function saveLetter() {
+  const c = charInput.value;
+  if (!c) return alert("Enter letter");
+  localStorage.setItem("char_" + c, drawCanvas.toDataURL());
 }
 
-// ===== PAPER SIZE =====
-function applyPaperSize(){
- const size=paperSize.value;
- let w,h;
+// ===== CREATE PAGE (REAL SIZE) =====
+function createPage(style, sizeKey) {
+  const size = PAPER[sizeKey];
+  const page = document.createElement("div");
 
- if(size==="A4"){w=794;h=1123;}
- if(size==="A5"){w=559;h=794;}
- if(size==="Letter"){w=816;h=1056;}
+  page.className = "page " + style;
 
- document.querySelectorAll(".page").forEach(p=>{
-   p.style.width=w+"px";
-   p.style.height=h+"px";
- });
+  page.style.width = size.width * DPI + "px";
+  page.style.height = size.height * DPI + "px";
+
+  return page;
 }
 
-// ===== GENERATE =====
-function generate(){
- let text=textInput.value;
- let spacing=parseInt(document.getElementById("spacing").value);
- let style=document.getElementById("paperStyle").value;
+// ===== GENERATE (FIXED ENGINE) =====
+function generate() {
+  const text = textInput.value;
+  const spacing = parseInt(document.getElementById("spacing").value);
+  const style = paperStyle.value;
+  const sizeKey = paperSize.value;
 
- pages.innerHTML="";
+  pages.innerHTML = "";
 
- let page=createPage(style);
- pages.appendChild(page);
+  let page = createPage(style, sizeKey);
+  pages.appendChild(page);
 
- let x=0,y=0;
+  const marginLeft = 70;
+  const marginTop = 40;
 
- [...text].forEach(ch=>{
-   let img=document.createElement("img");
-   img.src=localStorage.getItem("char_"+ch)||"";
-   img.style.position="absolute";
-   img.style.top=(y*spacing+20)+"px";
-   img.style.left=(x+70)+"px";
-   img.style.height="30px";
+  const lineHeight = spacing;
+  const charWidth = 24;
 
-   page.appendChild(img);
+  let x = marginLeft;
+  let y = marginTop;
 
-   x+=25;
-   if(x>700){x=0;y++;}
-   if(y*spacing>1000){
-     page=createPage(style);
-     pages.appendChild(page);
-     x=0;y=0;
-   }
- });
+  const pageHeight = PAPER[sizeKey].height * DPI - 60;
+  const pageWidth = PAPER[sizeKey].width * DPI - 40;
 
- applyPaperSize();
-}
+  [...text].forEach((ch) => {
+    const imgData = localStorage.getItem("char_" + ch);
 
-// ===== CREATE PAGE =====
-function createPage(style){
- let p=document.createElement("div");
- p.className="page "+style;
- return p;
+    let el;
+    if (imgData) {
+      el = document.createElement("img");
+      el.src = imgData;
+      el.style.height = (lineHeight * 0.8) + "px";
+    } else {
+      el = document.createElement("span");
+      el.textContent = ch;
+      el.style.fontSize = (lineHeight * 0.8) + "px";
+    }
+
+    el.style.position = "absolute";
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+
+    page.appendChild(el);
+
+    x += charWidth;
+
+    // wrap line
+    if (x > pageWidth) {
+      x = marginLeft;
+      y += lineHeight;
+    }
+
+    // new page
+    if (y > pageHeight) {
+      page = createPage(style, sizeKey);
+      pages.appendChild(page);
+      x = marginLeft;
+      y = marginTop;
+    }
+  });
 }
 </script>
 
