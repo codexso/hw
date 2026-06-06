@@ -1,242 +1,534 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Handwriting Generator Clean</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konnagar: Ancient Roots to Digital Horizons</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+  
+  <style>
+    /* CSS VARIABLES FOR DARK/LIGHT MODE */
+    :root {
+      --primary-color: #1a3a5c;
+      --accent-color: #3498db;
+      --highlight-color: #e67e22;
+      --text-light: #f8fafc;
+      --text-dark: #2d3748;
+      --bg-main: #0a1128;
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --nav-bg: rgba(10, 17, 40, 0.8);
+      --font-en: 'Poppins', sans-serif;
+      --font-bn: 'Tiro Bangla', serif;
+    }
 
-<style>
-body { font-family: Arial; text-align:center; margin:0; }
+    /* LIGHT MODE OVERRIDES */
+    body.light-mode {
+      --bg-main: #f4f7f6;
+      --text-light: #2d3748;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f8fafc;
+      --border-color: #d1d9e6;
+      --nav-bg: rgba(255, 255, 255, 0.9);
+      --accent-color: #1a5f9a;
+    }
 
-.controls {
-  padding:10px;
-  position:sticky;
-  top:0;
-  background:#fff;
-  z-index:10;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-input, select, button {
-  padding:8px;
-  margin:5px;
-  border-radius:6px;
-}
+    body {
+      font-family: var(--font-en);
+      background: var(--bg-main);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s, font-family 0.3s;
+    }
+    body.lang-bn { font-family: var(--font-bn); }
 
-.page {
-  margin:20px auto;
-  position:relative;
-  background:white;
-  overflow:hidden;
-}
+    /* Background decoration */
+    .bg-pattern {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(circle at 15% 50%, rgba(52, 152, 219, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 30%, rgba(230, 126, 34, 0.08) 0%, transparent 50%);
+      z-index: -1;
+      pointer-events: none;
+    }
 
-/* margin line */
-.page::before {
-  content:"";
-  position:absolute;
-  left:60px;
-  width:2px;
-  height:100%;
-  background:red;
-}
+    /* Top Glass Navigation Bar */
+    .top-bar {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+      background: var(--nav-bg); backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 40px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s;
+    }
 
-/* notebook lines */
-.single {
-  background-image: repeating-linear-gradient(
-    to bottom, white 0px, white 28px, #4a90e2 29px
-  );
-}
+    /* Left Nav Controls (Theme & Weather) */
+    .nav-left { display: flex; align-items: center; gap: 15px; }
 
-/* drawing */
-canvas {
-  border:2px dashed black;
-  width:90%;
-  max-width:300px;
-  touch-action:none;
-}
+    .theme-btn {
+      background: var(--bg-card); color: var(--text-light);
+      border: 1px solid var(--border-color); border-radius: 50%;
+      width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.2rem; transition: all 0.2s;
+    }
+    .theme-btn:hover { background: var(--accent-color); color: #fff; }
 
-/* print */
-@media print {
-  body { background:white; }
-  .controls, canvas { display:none; }
-  .page { margin:0; page-break-after:always; }
-}
-</style>
+    .weather-widget {
+      display: flex; align-items: center; gap: 15px;
+      background: var(--bg-card); padding: 8px 16px;
+      border-radius: 20px; border: 1px solid var(--border-color);
+    }
+    .weather-item { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--text-light); }
+    .weather-item i { color: var(--highlight-color); font-size: 1.2rem; }
 
+    /* Right Nav Controls (Lang + Dropdown) */
+    .nav-right { display: flex; align-items: center; gap: 15px; }
+
+    .lang-btn {
+      background: transparent; color: var(--text-light); border: 1px solid var(--accent-color);
+      padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: all 0.2s;
+    }
+    .lang-btn:hover { background: var(--accent-color); color: #fff;}
+
+    /* Creator Dropdown */
+    .creator-dropdown { position: relative; }
+    .dropbtn {
+      background: linear-gradient(135deg, #1a5f9a, #3498db); color: white; padding: 10px 20px; font-size: 14px; border: none;
+      cursor: pointer; border-radius: 30px; font-family: inherit; font-weight: 600;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); display: flex; align-items: center; gap: 8px; transition: transform 0.2s;
+    }
+    .creator-dropdown:hover .dropbtn { transform: translateY(-2px); }
+
+    .dropdown-content {
+      display: none; position: absolute; right: 0; margin-top: 15px;
+      background: var(--nav-bg); min-width: 320px; box-shadow: 0px 10px 30px rgba(0,0,0,0.3); z-index: 1;
+      border-radius: 16px; border: 1px solid var(--accent-color); padding: 24px; backdrop-filter: blur(10px);
+    }
+    .creator-dropdown:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .creator-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+    .creator-avatar { width: 50px; height: 50px; background: var(--accent-color); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .creator-info h3 { font-size: 1.2rem; color: var(--text-light); }
+    .creator-info p { font-size: 0.85rem; color: var(--highlight-color); font-weight: 600; text-transform: uppercase; }
+    .creator-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; opacity: 0.9; }
+    .creator-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
+    .badge { background: rgba(52, 152, 219, 0.1); border: 1px solid var(--accent-color); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; color: var(--text-light); display: flex; align-items: center; gap: 5px; }
+    .yt-btn { display: flex; justify-content: center; align-items: center; gap: 8px; background: #ff0000; color: #fff; text-decoration: none; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+    .yt-btn:hover { background: #cc0000; }
+
+    /* HEADER SECTION */
+    header { 
+      text-align: center; padding: 160px 20px 60px; 
+      background: radial-gradient(circle at top, rgba(52, 152, 219, 0.1) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border-color);
+    }
+    header h1 { font-size: 4rem; font-weight: 700; background: linear-gradient(90deg, #a8c4e0, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+    body.light-mode header h1 { background: linear-gradient(90deg, #1a3a5c, var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    header p { font-size: 1.2rem; color: var(--text-light); max-width: 700px; margin: 0 auto; opacity: 0.9;}
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+    .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; color: var(--text-light); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;}
+    .section-subtitle { text-align: center; font-size: 1.05rem; color: var(--text-light); margin-bottom: 40px; margin-top: 15px; opacity: 0.8;}
+
+    /* GRIDS */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; margin-bottom: 80px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 80px;}
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 80px;}
+
+    /* ICON CARDS */
+    .feature-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; display: flex; align-items: flex-start; gap: 20px; transition: all 0.3s; }
+    .feature-card:hover { background: var(--bg-card-hover); border-color: var(--accent-color); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .card-icon-large { width: 65px; height: 65px; background: rgba(230, 126, 34, 0.1); color: var(--highlight-color); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; }
+    .feature-info h3 { font-size: 1.3rem; color: var(--text-light); margin-bottom: 5px; }
+    .feature-info .tag { font-size: 0.8rem; color: var(--highlight-color); font-weight: 600; margin-bottom: 10px; display: inline-block; background: rgba(230,126,34,0.1); padding: 3px 10px; border-radius: 6px; }
+    .feature-info p { color: var(--text-light); font-size: 0.95rem; opacity: 0.85; }
+
+    /* MAP SECTION */
+    .map-container { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); height: 400px; margin-bottom: 80px; }
+    .map-container iframe { width: 100%; height: 100%; border: none; }
+
+    /* HALL OF FAME SPECIFIC */
+    .star-card { flex-direction: column; text-align: center; align-items: center; padding: 30px; }
+    .star-card .card-icon-large { margin: 0 auto 15px; background: rgba(52, 152, 219, 0.1); color: var(--accent-color); border-radius: 50%; width: 80px; height: 80px; font-size: 2.5rem;}
+    .star-card p { flex-grow: 1; }
+
+    @media (max-width: 768px) {
+      .top-bar { flex-direction: column; gap: 15px; padding: 15px; position: relative; }
+      header { padding-top: 40px; }
+      header h1 { font-size: 3rem; }
+      .feature-card { flex-direction: column; align-items: center; text-align: center; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="controls">
+  <div class="bg-pattern"></div>
 
-<input id="textInput" placeholder="Enter text">
+  <div class="top-bar">
+    <div class="nav-left">
+      <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()"><i class="ti ti-sun"></i></button>
+      
+      <div class="weather-widget" id="weather-box">
+        <div class="weather-item"><i class="ti ti-map-pin"></i> Konnagar Live</div>
+        <div class="weather-item" title="Current Temperature"><i class="ti ti-temperature"></i> <span id="temp-val">--°C</span></div>
+      </div>
+    </div>
 
-<select id="paperSize">
-  <option>A4</option>
-  <option>A5</option>
-  <option>Letter</option>
-</select>
+    <div class="nav-right">
+      <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">বাংলা</button>
 
-<input type="range" id="spacing" min="20" max="60" value="30">
+      <div class="creator-dropdown">
+        <button class="dropbtn" id="t-creator-btn"><i class="ti ti-code-circle"></i> A Learner Among Legends <i class="ti ti-chevron-down"></i></button>
+        <div class="dropdown-content">
+          <div class="creator-header">
+            <div class="creator-avatar"><i class="ti ti-user-edit"></i></div>
+            <div class="creator-info">
+              <h3>Soham</h3>
+              <p id="t-creator-title">Digital Architect</p>
+            </div>
+          </div>
+          <p class="creator-desc" id="t-creator-desc">Class 9 student at <b>ABVB Rishra, Hooghly</b>. A creative learner blending traditional arts with digital skills to build interactive projects.</p>
+          <div class="creator-badges">
+            <span class="badge"><i class="ti ti-brush"></i> 5th Yr Drawing</span>
+            <span class="badge"><i class="ti ti-music"></i> 2nd Yr Tabla</span>
+            <span class="badge"><i class="ti ti-video"></i> Video Editor</span>
+            <span class="badge"><i class="ti ti-device-laptop"></i> Coder</span>
+          </div>
+          <a href="https://youtube.com/@sohamedits007" target="_blank" class="yt-btn">
+            <i class="ti ti-brand-youtube-filled"></i> Subscribe @sohamedits007
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<button onclick="generate()">Generate</button> <button onclick="window.print()">Print</button>
+  <header>
+    <h1 id="t-main-title">Konnagar</h1>
+    <p id="t-main-sub">Exploring the Ancient Roots, Culture, and Architectural Marvels of the Hooghly's West Bank</p>
+  </header>
 
-<br>
+  <div class="container">
+    
+    <h2 class="section-title" id="t-landmarks">Landmarks & Heritage</h2>
+    <p class="section-subtitle" id="t-landmarks-sub">The architectural pillars that built the city's historical importance.</p>
 
-<input id="profileName" placeholder="Profile">
-<button onclick="saveProfile()">Save</button>
-<button onclick="loadProfile()">Load</button>
+    <div class="grid-2">
+      <div class="feature-card">
+        <div class="card-icon-large"><i class="ti ti-building-mosque"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="lm1-title">Baro Mandir Ghat</h3>
+          <span class="tag">Built in 1821</span>
+          <p data-translate="lm1-desc">Twelve identical Shiva temples featuring classic Bengal 'Aatchala' architecture. They have served as the spiritual anchor for the local community for over two centuries right on the banks of the Hooghly River.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large"><i class="ti ti-flame"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="lm2-title">Shakuntala Kali Temple</h3>
+          <span class="tag">Ancient Heart</span>
+          <p data-translate="lm2-desc">A deeply revered ancient temple representing the Shakti worship traditions of Bengal. It remains a focal point for major festivals, drawing devotees from across the state.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large"><i class="ti ti-shoe"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="lm3-title">First Bata Factory (1931)</h3>
+          <span class="tag">Industrial Landmark</span>
+          <p data-translate="lm3-desc">Before moving to Batanagar, the famous Czechoslovak shoe tycoon Tomáš Baťa established his very first Indian footwear operation right here in Konnagar, making it a critical site in India's industrial history.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large"><i class="ti ti-home-ribbon"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="lm4-title">Ghoshal Bari</h3>
+          <span class="tag">571-Year Tradition</span>
+          <p data-translate="lm4-desc">Received Zamindari rights in 1454 during the Mughal era. The family preserves a 571-year-old Durga Puja tradition that perfectly blends ancient rituals with the town's evolving culture.</p>
+        </div>
+      </div>
+    </div>
 
-</div>
+    <h2 class="section-title" id="t-map">Find Us on the Map</h2>
+    <p class="section-subtitle" id="t-map-sub">Located on the picturesque west bank of the Hooghly River.</p>
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14729.85108257007!2d88.3364!3d22.7005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89c00067da201%3A0xc3c513e9a72b9a76!2sKonnagar%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" loading="lazy"></iframe>
+    </div>
 
-<div id="pages"></div>
+    <h2 class="section-title" id="t-academic">Study Trails & Educational Roots</h2>
+    <p class="section-subtitle" id="t-academic-sub">Institutions born from the Bengal Renaissance that shaped modern minds.</p>
 
-<h3>Draw Letter</h3>
-<canvas id="drawCanvas" width="200" height="200"></canvas><br>
-<input id="charInput" placeholder="Letter">
-<button onclick="saveLetter()">Save Letter</button>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #9b59b6; background: rgba(155, 89, 182, 0.1);"><i class="ti ti-school"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="ac1-title">Konnagar High School</h3>
+          <span class="tag">Established 1854</span>
+          <p data-translate="ac1-desc">Founded by Shib Chandra Deb, this historic school laid the groundwork for mass literacy and produced legendary alumni, including Shashi Bhusan Chatterjee.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #9b59b6; background: rgba(155, 89, 182, 0.1);"><i class="ti ti-books"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="ac2-title">Konnagar Public Library</h3>
+          <span class="tag">Established 1858</span>
+          <p data-translate="ac2-desc">One of the oldest free reading rooms in the region, established to cultivate intellectual awakening and literary discussions among the local youth.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #9b59b6; background: rgba(155, 89, 182, 0.1);"><i class="ti ti-building-community"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="ac3-title">Nabagram Hiralal Paul College</h3>
+          <span class="tag">Established 1957</span>
+          <p data-translate="ac3-desc">A prominent general degree college contributing significantly to higher education and youth development in the surrounding Hooghly district.</p>
+        </div>
+      </div>
+    </div>
 
-<script>
-// ===== PAPER =====
-const DPI = 3.78;
-const PAPER = {
-  A4: [210,297],
-  A5: [148,210],
-  Letter: [216,279]
-};
+    <h2 class="section-title" id="t-gov">Civic & Government Centers</h2>
+    <p class="section-subtitle" id="t-gov-sub">The administrative heart driving the town's development.</p>
 
-// ===== CANVAS DRAW =====
-const canvas = document.getElementById("drawCanvas");
-const ctx = canvas.getContext("2d");
+    <div class="grid-2">
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #e74c3c; background: rgba(231, 76, 60, 0.1);"><i class="ti ti-building-bank"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="gv1-title">Konnagar Municipality</h3>
+          <span class="tag">Established 1944</span>
+          <p data-translate="gv1-desc">Governing an area of 4.67 sq km, the municipality was founded by Nrishinha Das Basu to manage the rapidly growing suburban population. Located at 73, G.T. Road, it remains the civic heart of the city.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #e74c3c; background: rgba(231, 76, 60, 0.1);"><i class="ti ti-train"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="gv2-title">Railway & Post Systems</h3>
+          <span class="tag">19th Century Logistics</span>
+          <p data-translate="gv2-desc">Konnagar's integration into the colonial rail network and the establishment of its post office fundamentally transformed it from a riverside village into a connected economic hub.</p>
+        </div>
+      </div>
+    </div>
 
-let drawing = false;
+    <h2 class="section-title" id="t-arts">Arts, Songs & Literature</h2>
+    <p class="section-subtitle" id="t-arts-sub">Where the melody of the river meets the poetry of Bengal.</p>
 
-function pos(e){
-  const r=canvas.getBoundingClientRect();
-  const t=e.touches?e.touches[0]:e;
-  return {x:t.clientX-r.left,y:t.clientY-r.top};
-}
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #f1c40f; background: rgba(241, 196, 15, 0.1);"><i class="ti ti-music"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="ar1-title">Tagore's Melodies at the Ghat</h3>
+          <p data-translate="ar1-desc">Rabindranath Tagore visited Konnagar multiple times, including a significant trip at age 19 to the Brahmo Samaj Ghat with his father, where the tranquil river influenced his poetic and musical sensibilities.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #f1c40f; background: rgba(241, 196, 15, 0.1);"><i class="ti ti-writing"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="ar2-title">Baganbari's Literary Inspiration</h3>
+          <p data-translate="ar2-desc">Abanindranath Tagore’s childhood experiences in Konnagar’s lush gardens inspired his timeless Bengali children’s classics like <i>Kshirer Putul</i> and <i>Buro Angla</i>.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon-large" style="color: #f1c40f; background: rgba(241, 196, 15, 0.1);"><i class="ti ti-feather"></i></div>
+        <div class="feature-info">
+          <h3 data-translate="ar3-title">The Sibram Connection</h3>
+          <p data-translate="ar3-desc">The legendary Bengali humorist and writer Sibram Chakraborty spent a part of his childhood living near G.T. Road beside the High School, absorbing the local culture.</p>
+        </div>
+      </div>
+    </div>
 
-canvas.onmousedown=()=>drawing=true;
-canvas.onmouseup=()=>{drawing=false;ctx.beginPath();};
-canvas.onmousemove=e=>{
-  if(!drawing)return;
-  let p=pos(e);
-  ctx.lineWidth=3;
-  ctx.lineCap="round";
-  ctx.lineTo(p.x,p.y);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(p.x,p.y);
-};
+    <h2 class="section-title" id="t-fame">The Expanded Hall of Fame</h2>
+    <p class="section-subtitle" id="t-fame-sub">The historical luminaries who shaped the legacy of Konnagar on a global scale.</p>
 
-canvas.ontouchstart=()=>drawing=true;
-canvas.ontouchend=()=>{drawing=false;ctx.beginPath();};
-canvas.ontouchmove=e=>{
-  e.preventDefault();
-  if(!drawing)return;
-  let p=pos(e);
-  ctx.lineTo(p.x,p.y);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(p.x,p.y);
-};
+    <div class="grid-4">
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-building-monument"></i></div>
+        <div class="feature-info">
+          <h3>Shib Chandra Deb</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Modern Architect</span>
+          <p>A pioneering Brahmo leader who tirelessly brought the railway station, post office, and foundational schools to Konnagar.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-om"></i></div>
+        <div class="feature-info">
+          <h3>Sri Aurobindo</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Philosopher & Yogi</span>
+          <p>A world-renowned yogi and fierce Indian nationalist, whose deep ancestral roots trace directly back to this historic soil.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-palette"></i></div>
+        <div class="feature-info">
+          <h3>Abanindranath Tagore</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Bengal School of Art</span>
+          <p>The illustrious artist spent pivotal childhood years in his family's Konnagar Baganbari beside the Hooghly River.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-antenna"></i></div>
+        <div class="feature-info">
+          <h3>Sisir Kumar Mitra</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Pioneer of Radio-Science</span>
+          <p>An internationally acclaimed physicist born in Konnagar, whose groundbreaking research established radio science in India.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-gavel"></i></div>
+        <div class="feature-info">
+          <h3>Digambar Mitra</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">1st Bengali Sheriff</span>
+          <p>Born in 1817, he was a prominent Derozian and successful businessman who rose to become the first Bengali Sheriff of Kolkata.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-language"></i></div>
+        <div class="feature-info">
+          <h3>Shafiur Rahman</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Language Martyr</span>
+          <p>Born in Konnagar, he sacrificed his life as one of the key martyrs of the historic Bengali Language Movement in 1952.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-books"></i></div>
+        <div class="feature-info">
+          <h3>Sibram Chakraborty</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Legendary Humorist</span>
+          <p>The beloved Bengali writer lived near Konnagar High School during his childhood, absorbing the town's vibrant character.</p>
+        </div>
+      </div>
+      <div class="feature-card star-card">
+        <div class="card-icon-large"><i class="ti ti-shoe"></i></div>
+        <div class="feature-info">
+          <h3>Jan Antonín Baťa</h3>
+          <span class="tag" style="background: transparent; color: var(--accent-color);">Industrialist</span>
+          <p>The shoe magnate chose Konnagar to lay the very first foundations of the Bata Shoe Company in India in 1931.</p>
+        </div>
+      </div>
+    </div>
 
-// ===== SAVE LETTER =====
-function saveLetter(){
-  let c=charInput.value;
-  if(!c)return;
-  localStorage.setItem("char_"+c,canvas.toDataURL());
-  alert("Saved "+c);
-}
+  </div>
 
-// ===== GENERATE =====
-function generate(){
-  let text=textInput.value;
-  let size=paperSize.value;
-  let spacing=parseInt(document.getElementById("spacing").value);
-
-  pages.innerHTML="";
-
-  let [wmm,hmm]=PAPER[size];
-  let w=wmm*DPI, h=hmm*DPI;
-
-  let page=createPage(w,h);
-  pages.appendChild(page);
-
-  let x=70, y=40;
-
-  for(let ch of text){
-    let data=localStorage.getItem("char_"+ch);
-
-    let el;
-    if(data){
-      el=document.createElement("img");
-      el.src=data;
-      el.style.height=spacing*0.8+"px";
-    } else {
-      el=document.createElement("span");
-      el.innerText=ch;
-      el.style.fontSize=spacing*0.8+"px";
+  <script>
+    // --- THEME TOGGLE (DARK/LIGHT MODE) ---
+    let isLightMode = false;
+    function toggleTheme() {
+      isLightMode = !isLightMode;
+      const themeBtn = document.getElementById('theme-toggle');
+      if (isLightMode) {
+        document.body.classList.add('light-mode');
+        themeBtn.innerHTML = '<i class="ti ti-moon"></i>';
+      } else {
+        document.body.classList.remove('light-mode');
+        themeBtn.innerHTML = '<i class="ti ti-sun"></i>';
+      }
     }
 
-    el.style.position="absolute";
-    el.style.left=x+"px";
-    el.style.top=y+"px";
-
-    page.appendChild(el);
-
-    x+=spacing*0.7;
-
-    if(x>w-50){
-      x=70;
-      y+=spacing;
+    // --- LIVE WEATHER FETCH ---
+    async function fetchWeather() {
+      try {
+        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=22.7005&longitude=88.3364&current_weather=true');
+        const data = await response.json();
+        if(data && data.current_weather) {
+          document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + '°C';
+        }
+      } catch (error) {
+        document.getElementById('temp-val').innerText = "N/A";
+      }
     }
+    fetchWeather();
+    setInterval(fetchWeather, 900000); 
 
-    if(y>h-50){
-      page=createPage(w,h);
-      pages.appendChild(page);
-      x=70;
-      y=40;
+    // --- MULTILINGUAL TRANSLATION SYSTEM ---
+    let currentLang = 'en';
+
+    const translations = {
+      en: {
+        't-creator-btn': '<i class="ti ti-code-circle"></i> A Learner Among Legends <i class="ti ti-chevron-down"></i>',
+        't-creator-title': 'Digital Architect',
+        't-creator-desc': 'Class 9 student at <b>ABVB Rishra, Hooghly</b>. A creative learner blending traditional arts with digital skills to build interactive projects.',
+        't-main-title': 'Konnagar',
+        't-main-sub': 'Exploring the Ancient Roots, Culture, and Architectural Marvels of the Hooghly\'s West Bank',
+        't-landmarks': 'Landmarks & Heritage',
+        't-landmarks-sub': 'The architectural pillars that built the city\'s historical importance.',
+        't-map': 'Find Us on the Map',
+        't-map-sub': 'Located on the picturesque west bank of the Hooghly River.',
+        't-academic': 'Study Trails & Educational Roots',
+        't-academic-sub': 'Institutions born from the Bengal Renaissance that shaped modern minds.',
+        't-gov': 'Civic & Government Centers',
+        't-gov-sub': 'The administrative heart driving the town\'s development.',
+        't-arts': 'Arts, Songs & Literature',
+        't-arts-sub': 'Where the melody of the river meets the poetry of Bengal.',
+        't-fame': 'The Expanded Hall of Fame',
+        't-fame-sub': 'The historical luminaries who shaped the legacy of Konnagar on a global scale.',
+        
+        // Data translations
+        'lm1-title': 'Baro Mandir Ghat', 'lm1-desc': 'Twelve identical Shiva temples featuring classic Bengal Aatchala architecture. They have served as the spiritual anchor for the local community for over two centuries right on the banks of the Hooghly River.',
+        'lm2-title': 'Shakuntala Kali Temple', 'lm2-desc': 'A deeply revered ancient temple representing the Shakti worship traditions of Bengal. It remains a focal point for major festivals, drawing devotees from across the state.',
+        'lm3-title': 'First Bata Factory (1931)', 'lm3-desc': 'Before moving to Batanagar, the famous Czechoslovak shoe tycoon Tomáš Baťa established his very first Indian footwear operation right here in Konnagar, making it a critical site in India\'s industrial history.',
+        'lm4-title': 'Ghoshal Bari', 'lm4-desc': 'Received Zamindari rights in 1454 during the Mughal era. The family preserves a 571-year-old Durga Puja tradition that perfectly blends ancient rituals with the town\'s evolving culture.',
+        'ac1-title': 'Konnagar High School', 'ac1-desc': 'Founded by Shib Chandra Deb, this historic school laid the groundwork for mass literacy and produced legendary alumni, including Shashi Bhusan Chatterjee.',
+        'ac2-title': 'Konnagar Public Library', 'ac2-desc': 'One of the oldest free reading rooms in the region, established to cultivate intellectual awakening and literary discussions among the local youth.',
+        'ac3-title': 'Nabagram Hiralal Paul College', 'ac3-desc': 'A prominent general degree college contributing significantly to higher education and youth development in the surrounding Hooghly district.',
+        'gv1-title': 'Konnagar Municipality', 'gv1-desc': 'Governing an area of 4.67 sq km, the municipality was founded by Nrishinha Das Basu to manage the rapidly growing suburban population. Located at 73, G.T. Road, it remains the civic heart of the city.',
+        'gv2-title': 'Railway & Post Systems', 'gv2-desc': 'Konnagar\'s integration into the colonial rail network and the establishment of its post office fundamentally transformed it from a riverside village into a connected economic hub.',
+        'ar1-title': 'Tagore\'s Melodies at the Ghat', 'ar1-desc': 'Rabindranath Tagore visited Konnagar multiple times, including a significant trip at age 19 to the Brahmo Samaj Ghat with his father, where the tranquil river influenced his poetic and musical sensibilities.',
+        'ar2-title': 'Baganbari\'s Literary Inspiration', 'ar2-desc': 'Abanindranath Tagore’s childhood experiences in Konnagar’s lush gardens inspired his timeless Bengali children’s classics like Kshirer Putul and Buro Angla.',
+        'ar3-title': 'The Sibram Connection', 'ar3-desc': 'The legendary Bengali humorist and writer Sibram Chakraborty spent a part of his childhood living near G.T. Road beside the High School, absorbing the local culture.'
+      },
+      bn: {
+        't-creator-btn': '<i class="ti ti-code-circle"></i> কিংবদন্তিদের মাঝে এক শিক্ষার্থী <i class="ti ti-chevron-down"></i>',
+        't-creator-title': 'ডিজিটাল আর্কিটেক্ট',
+        't-creator-desc': '<b>এ.বি.ভি.বি রিষড়া, হুগলি</b>-এর নবম শ্রেণীর ছাত্র। আধুনিক প্রযুক্তির সাথে ঐতিহ্যবাহী শিল্পের মিশ্রণ ঘটিয়ে নতুন কিছু তৈরি করতে আগ্রহী একজন ছাত্র।',
+        't-main-title': 'কোন্নগর',
+        't-main-sub': 'হুগলি নদীর পশ্চিম তীরের প্রাচীন শিকড়, সংস্কৃতি এবং স্থাপত্য বিস্ময়ের অন্বেষণ',
+        't-landmarks': 'দর্শনীয় স্থান ও ঐতিহ্য',
+        't-landmarks-sub': 'শহরের ঐতিহাসিক ও সাংস্কৃতিক গুরুত্বের মূল স্তম্ভ।',
+        't-map': 'মানচিত্রে খুঁজুন',
+        't-map-sub': 'হুগলি নদীর মনোরম পশ্চিম তীরে অবস্থিত।',
+        't-academic': 'শিক্ষাক্ষেত্র ও বিদ্যালয়',
+        't-academic-sub': 'বাংলা নবজাগরণের সময় থেকে আধুনিক শিক্ষা প্রতিষ্ঠান।',
+        't-gov': 'পৌরসভা ও প্রশাসনিক কেন্দ্র',
+        't-gov-sub': 'কোন্নগরের নাগরিক পরিকাঠামো এবং সরকারি সদর দপ্তর।',
+        't-arts': 'শিল্প, গান ও সাহিত্য',
+        't-arts-sub': 'যেখানে নদীর স্রোতের সাথে বাংলার কবিতার মেলবন্ধন ঘটে।',
+        't-fame': 'স্মরণীয় ব্যক্তিত্বের তালিকা',
+        't-fame-sub': 'ঐতিহাসিক ব্যক্তিত্ব যারা কোন্নগরের রূপরেখা বিশ্বমঞ্চে তুলে ধরেছিলেন।',
+
+        // Content
+        'lm1-title': 'দ্বাদশ শিব মন্দির ঘাট', 'lm1-desc': 'হুগলি নদীর তীরে অবস্থিত বারোটি শিব মন্দির, যা চিরাচরিত বাংলার আটচালা স্থাপত্যের এক অপূর্ব নিদর্শন।',
+        'lm2-title': 'শকুন্তলা কালী মন্দির', 'lm2-desc': 'বাংলার শাক্ত উপাসনার এক প্রাচীন এবং অত্যন্ত জাগ্রত মন্দির, যা বহু ভক্তের সমাগমের কেন্দ্রবিন্দু।',
+        'lm3-title': 'প্রথম বাটা কারখানা (১৯৩১)', 'lm3-desc': 'বাটানগরে স্থানান্তরিত হওয়ার আগে বিখ্যাত জুতো ব্যবসায়ী টমাস বাটা কোন্নগরেই তার প্রথম কারখানা স্থাপন করেন।',
+        'lm4-title': 'ঘোষাল বাড়ি', 'lm4-desc': '১৪৫৪ সালে মুঘল আমলে জমিদারি লাভ করা এই পরিবার আজীবন ধরে ৫৭১ বছরের পুরনো দুর্গাপূজার ঐতিহ্য ধরে রেখেছে।',
+        'ac1-title': 'কোন্নগর হাই স্কুল', 'ac1-desc': 'শিব চন্দ্র দেব কর্তৃক প্রতিষ্ঠিত এই ঐতিহাসিক স্কুলটি শিক্ষার প্রসারে এক বিশাল ভূমিকা পালন করেছে।',
+        'ac2-title': 'কোন্নগর পাবলিক লাইব্রেরি', 'ac2-desc': 'এলাকার প্রাচীনতম ফ্রি রিডিং রুমগুলির মধ্যে একটি, যা তরুণদের মধ্যে বৌদ্ধিক জাগরণ ঘটাতে সাহায্য করেছিল।',
+        'ac3-title': 'নবগ্রাম হীরালাল পাল কলেজ', 'ac3-desc': 'উচ্চশিক্ষা ও যুব উন্নয়নে গুরুত্বপূর্ণ ভূমিকা পালন করা একটি বিখ্যাত সাধারণ ডিগ্রি কলেজ।',
+        'gv1-title': 'কোন্নগর পৌরসভা', 'gv1-desc': '১৯৪৪ সালে নৃসিংহ দাস বসু দ্বারা প্রতিষ্ঠিত। ৭৩, জি.টি. রোডে অবস্থিত এই পৌরসভা শহরের প্রাণকেন্দ্র।',
+        'gv2-title': 'রেল ও ডাক ব্যবস্থা', 'gv2-desc': 'কোন্নগরের রেল ব্যবস্থা এবং পোস্ট অফিস এটিকে একটি সাধারণ গ্রাম থেকে আধুনিক শহরে রূপান্তরিত করেছে।',
+        'ar1-title': 'ঘাটে রবি ঠাকুরের সুর', 'ar1-desc': 'রবীন্দ্রনাথ ঠাকুর কোন্নগরে একাধিকবার এসেছিলেন। ব্রাহ্মসমাজ ঘাটে তার সময় কাটানো তার সংগীতে গভীর প্রভাব ফেলে।',
+        'ar2-title': 'বাগানবাড়ির সাহিত্যিক অনুপ্রেরণা', 'ar2-desc': 'অবনীন্দ্রনাথ ঠাকুরের কোন্নগরের বাগানবাড়ির স্মৃতি তার বিখ্যাত শিশু সাহিত্য যেমন ক্ষীরের পুতুল-এ ফুটে উঠেছে।',
+        'ar3-title': 'শিবরাম চক্রবর্তীর স্মৃতি', 'ar3-desc': 'বিখ্যাত বাঙালি রম্যলেখক শিবরাম চক্রবর্তী তার শৈশবের একটি অংশ কোন্নগর হাই স্কুলের কাছে কাটিয়েছিলেন।'
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'bn' : 'en';
+      document.getElementById('lang-toggle').innerText = currentLang === 'en' ? 'বাংলা' : 'English';
+      
+      if(currentLang === 'bn') {
+        document.body.classList.add('lang-bn');
+      } else {
+        document.body.classList.remove('lang-bn');
+      }
+
+      for (const [id, text] of Object.entries(translations[currentLang])) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = text;
+        const dataEl = document.querySelector(`[data-translate="${id}"]`);
+        if(dataEl) dataEl.innerHTML = text;
+      }
     }
-  }
-}
-
-// ===== CREATE PAGE =====
-function createPage(w,h){
-  let p=document.createElement("div");
-  p.className="page single";
-  p.style.width=w+"px";
-  p.style.height=h+"px";
-  return p;
-}
-
-// ===== PROFILE =====
-function saveProfile(){
-  let name=profileName.value;
-  let data={};
-
-  for(let i=32;i<127;i++){
-    let ch=String.fromCharCode(i);
-    let d=localStorage.getItem("char_"+ch);
-    if(d)data[ch]=d;
-  }
-
-  localStorage.setItem("profile_"+name,JSON.stringify(data));
-  alert("Saved profile");
-}
-
-function loadProfile(){
-  let name=profileName.value;
-  let d=localStorage.getItem("profile_"+name);
-  if(!d)return alert("Not found");
-
-  let data=JSON.parse(d);
-  for(let ch in data){
-    localStorage.setItem("char_"+ch,data[ch]);
-  }
-  alert("Loaded");
-}
-</script>
-
+  </script>
 </body>
 </html>
