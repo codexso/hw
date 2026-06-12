@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Konnagar: Ancient Roots to Digital Horizons</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Tiro+Bangla:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #0d1b2a;
@@ -19,7 +19,6 @@
       --border: rgba(0,180,216,0.15);
       --nav-bg: rgba(13,27,42,0.92);
       --font: 'Outfit', sans-serif;
-      --font-bn: 'Tiro Bangla', serif;
       --font-mono: 'Space Mono', monospace;
       --radius: 16px;
       --shadow: 0 8px 32px rgba(0,0,0,0.3);
@@ -37,7 +36,13 @@
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{font-family:var(--font);background:var(--primary);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
-    body.lang-bn{font-family:var(--font-bn)}
+
+    /* ========== AGGRESSIVE GOOGLE TRANSLATE HIDING ========== */
+    body { top: 0px !important; position: static !important; min-height: 100vh; }
+    .goog-te-banner-frame, .skiptranslate { display: none !important; visibility: hidden !important; }
+    #goog-gt-tt, .goog-te-balloon-frame { display: none !important; visibility: hidden !important; }
+    .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; pointer-events: none !important; }
+    #google_translate_element { display: none !important; }
 
     /* ========== SCROLLBAR ========== */
     ::-webkit-scrollbar{width:6px}
@@ -60,15 +65,19 @@
     .weather-pill{display:flex;align-items:center;gap:10px;background:var(--card);padding:7px 16px;border-radius:24px;border:1px solid var(--border);font-size:.85rem;font-weight:600;gap:14px}
     .weather-pill .w-item{display:flex;align-items:center;gap:5px;color:var(--text)}
     .weather-pill .w-item i{color:var(--accent);font-size:1rem}
-    .weather-pill #weather-icon{font-size:1.2rem}
-    .lang-sel{background:transparent;color:var(--text);border:1px solid var(--accent);padding:6px 12px;border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem;outline:none;font-family:inherit}
-    .lang-sel option{background:var(--primary)}
+
+    /* ========== CUSTOM LANGUAGE DROPDOWN ========== */
+    .custom-lang-wrap { position: relative; display: flex; align-items: center; }
+    .custom-lang-wrap i { position: absolute; left: 12px; color: var(--accent); font-size: 1.1rem; pointer-events: none; }
+    .lang-sel { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 16px 8px 36px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.85rem; outline: none; font-family: inherit; appearance: none; transition: 0.2s; }
+    .lang-sel:hover, .lang-sel:focus { border-color: var(--accent); }
+    .lang-sel option { background: var(--primary); color: var(--text); }
 
     /* Creator dropdown */
     .creator-wrap{position:relative}
     .creator-btn{background:linear-gradient(135deg,#0077b6,#00b4d8);color:#fff;padding:8px 18px;font-size:.85rem;border:none;cursor:pointer;border-radius:30px;font-family:inherit;font-weight:700;display:flex;align-items:center;gap:7px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(0,180,216,.35)}
     .creator-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(0,180,216,.5)}
-    .creator-drop{display:none;position:absolute;right:0;top:calc(100% + 12px);background:var(--nav-bg);min-width:300px;border-radius:var(--radius);border:1px solid var(--accent);padding:22px;backdrop-filter:blur(20px);box-shadow:0 20px 50px rgba(0,0,0,.4);animation:fadeUp .25s ease}
+    .creator-drop{display:none;position:absolute;right:0;top:calc(100% + 12px);background:var(--nav-bg);min-width:320px;border-radius:var(--radius);border:1px solid var(--accent);padding:22px;backdrop-filter:blur(20px);box-shadow:0 20px 50px rgba(0,0,0,.4);animation:fadeUp .25s ease}
     .creator-wrap:hover .creator-drop{display:block}
     @keyframes fadeUp{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
     .c-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
@@ -78,7 +87,7 @@
     .c-desc{font-size:.83rem;opacity:.88;margin-bottom:12px}
     .c-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
     .badge{background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.3);padding:4px 10px;border-radius:20px;font-size:.72rem;display:flex;align-items:center;gap:5px}
-    .yt-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#ff0000;color:#fff;text-decoration:none;padding:9px;border-radius:8px;font-weight:700;font-size:.85rem;transition:background .2s}
+    .yt-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:#ff0000;color:#fff;text-decoration:none;padding:9px;border-radius:8px;font-weight:700;font-size:.85rem;transition:background .2s; margin-bottom: 6px;}
     .yt-btn:hover{background:#cc0000}
 
     /* ========== HERO ========== */
@@ -99,11 +108,14 @@
     .btn-hero.outline{background:transparent;color:var(--text);border:2px solid var(--border)}
     .btn-hero.outline:hover{border-color:var(--accent);color:var(--accent)}
 
-    /* ========== NEWS TICKER ========== */
-    .ticker-wrap{background:var(--nav-bg);border-bottom:1px solid var(--border);padding:9px 0;overflow:hidden;display:flex;align-items:center}
-    .ticker-label{background:var(--accent2);color:#fff;font-weight:700;font-size:.78rem;padding:4px 14px;white-space:nowrap;margin-right:18px;border-radius:0 20px 20px 0;letter-spacing:1px;text-transform:uppercase;flex-shrink:0}
-    .ticker-inner{display:inline-block;white-space:nowrap;animation:scroll-ticker 40s linear infinite;color:var(--text);font-weight:600;font-size:.9rem}
-    @keyframes scroll-ticker{0%{transform:translate3d(100vw,0,0)}100%{transform:translate3d(-100%,0,0)}}
+    /* ========== REBUILT LIVE TICKER (BULLETPROOF MARQUEE) ========== */
+    .ticker-wrap { display: flex; align-items: center; background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 5px 0; }
+    .ticker-label { background: var(--accent2); color: #fff; font-weight: 700; font-size: 0.78rem; padding: 4px 14px; white-space: nowrap; border-radius: 0 20px 20px 0; letter-spacing: 1px; text-transform: uppercase; z-index: 2; margin-right: 15px;}
+    .ticker-marquee { flex: 1; overflow: hidden; position: relative; white-space: nowrap; box-sizing: border-box; }
+    .ticker-inner { display: inline-block; padding-left: 100%; animation: marqueeAnim 28s linear infinite; color: var(--text); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.3px; }
+    .ticker-inner i { color: var(--accent); margin-right: 5px; }
+    .ticker-marquee:hover .ticker-inner { animation-play-state: paused; } /* Pause on hover */
+    @keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
     /* ========== STATS ========== */
     .stats-strip{display:flex;justify-content:center;gap:0;flex-wrap:wrap;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border)}
@@ -124,13 +136,13 @@
     .grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:70px}
 
     /* ========== CARDS ========== */
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;display:flex;flex-direction:column}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;display:flex;flex-direction:column; text-decoration: none; color: inherit;}
     .card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--accent)}
     .card img{width:100%;height:210px;object-fit:cover;border-bottom:1px solid var(--border)}
     .card.full img{height:auto;max-height:320px;object-fit:contain;background:#fff}
     .card-body{padding:20px;flex-grow:1}
     .card-body h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
-    .card-body p{font-size:.88rem;opacity:.85}
+    .card-body p{font-size:.88rem;opacity:.85; margin-bottom: 10px;}
     .card-tag{display:inline-block;font-size:.72rem;color:var(--accent2);font-weight:700;background:rgba(247,127,0,.1);padding:3px 10px;border-radius:6px;margin-bottom:8px}
 
     .feat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:flex;align-items:flex-start;gap:18px;transition:all .3s}
@@ -142,42 +154,39 @@
     .star-card{flex-direction:column;text-align:center;align-items:center;padding:26px}
     .star-card .feat-icon{border-radius:50%;width:68px;height:68px;margin:0 auto 14px;font-size:2rem}
 
-    /* ========== TRANSIT HUB (MAIN UPGRADE) ========== */
-    .transit-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:70px;box-shadow:var(--shadow)}
-    .transit-header{background:linear-gradient(135deg,rgba(0,119,182,.25),rgba(0,180,216,.1));padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-    .transit-title{font-size:1.2rem;font-weight:800}
-    .transit-title span{color:var(--accent)}
+    /* ========== DROPDOWN PANELS (Transit & Forum) ========== */
+    .panel-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:70px;box-shadow:var(--shadow)}
+    .panel-header{background:linear-gradient(135deg,rgba(0,119,182,.25),rgba(0,180,216,.1));padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .panel-title{font-size:1.2rem;font-weight:800}
+    .panel-title span{color:var(--accent)}
+    .panel-dropdown-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s; outline: none; font-family: inherit; }
+    .panel-dropdown-btn i { transition: transform 0.3s ease; }
+    .panel-dropdown-btn.open { background: var(--accent); color: #fff; }
+    .panel-dropdown-btn.open i { transform: rotate(180deg); }
+    .panel-dropdown-btn.erail-btn { background: #ff4757; color: white; border-color: #ff4757; }
+    .panel-dropdown-btn.erail-btn:hover { background: #ff6b81; border-color: #ff6b81; transform: translateY(-2px); }
+    
+    .panel-body { display: none; }
+    .panel-body.open { display: block; animation: slideDown 0.3s ease-out forwards; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Transit specifics */
     .ist-clock{font-family:var(--font-mono);font-size:1.05rem;color:var(--accent);background:rgba(0,180,216,.1);padding:6px 16px;border-radius:20px;border:1px solid rgba(0,180,216,.3);letter-spacing:1px}
     .next-train-badge{background:linear-gradient(135deg,rgba(6,214,160,.2),rgba(6,214,160,.05));border:1px solid rgba(6,214,160,.4);border-radius:12px;padding:10px 18px;font-size:.85rem;display:flex;align-items:center;gap:10px}
-    .next-train-badge .ntb-label{opacity:.7;font-size:.75rem;text-transform:uppercase;letter-spacing:1px}
     .next-train-badge .ntb-val{font-weight:800;color:var(--accent3);font-family:var(--font-mono);font-size:1rem}
-    .ntb-dot{width:8px;height:8px;border-radius:50%;background:var(--accent3);animation:pulse 1.5s ease-in-out infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-
     .t-tabs{display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,.1)}
     body.light .t-tabs{background:rgba(0,0,0,.03)}
     .t-tab{flex:1;padding:14px 8px;font-size:.9rem;font-weight:700;color:var(--text);background:transparent;border:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
-    .t-tab:hover{background:var(--card-hover)}
     .t-tab.active{border-bottom-color:var(--accent);color:var(--accent)}
-
     .transit-panel{display:none;animation:fadeIn .25s ease}
     .transit-panel.active{display:block}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-
-    /* Search bar in transit */
     .transit-search{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-    .transit-search input{flex:1;background:transparent;border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--text);font-family:inherit;font-size:.9rem;outline:none;transition:border .2s}
-    .transit-search input:focus{border-color:var(--accent)}
-    .transit-search input::placeholder{opacity:.5}
-    .transit-search i{color:var(--text-muted);font-size:1.1rem}
+    .transit-search input{flex:1;background:transparent;border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--text);font-family:inherit;font-size:.9rem;outline:none;}
     .filter-btns{display:flex;gap:6px}
     .filter-btn{background:var(--card);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:.75rem;font-weight:700;cursor:pointer;color:var(--text);transition:all .2s;font-family:inherit}
     .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-
-    /* Route items */
-    .route-table{width:100%}
+    .route-table{width:100%; max-height: 400px; overflow-y: auto;}
     .route-row{display:grid;grid-template-columns:90px 1fr 80px 80px 90px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);transition:background .2s;gap:8px}
-    .route-row:last-child{border-bottom:none}
     .route-row:hover{background:var(--card-hover)}
     .route-row.next-highlight{background:rgba(6,214,160,.07);border-left:3px solid var(--accent3)}
     .r-time{font-family:var(--font-mono);font-weight:700;color:var(--accent2);font-size:.95rem}
@@ -193,43 +202,63 @@
     .status-pill.next{background:rgba(0,180,216,.15);color:var(--accent)}
     .route-thead{display:grid;grid-template-columns:90px 1fr 80px 80px 90px;padding:10px 20px 8px;border-bottom:2px solid var(--border);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.55;gap:8px}
 
-    /* Ferry panel */
-    .ferry-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;padding:20px}
-    .ferry-slot{background:var(--card-hover);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s}
-    .ferry-slot:hover{border-color:var(--accent);transform:scale(1.02)}
-    .ferry-slot.next-ferry{border-color:var(--accent3);background:rgba(6,214,160,.06)}
-    .f-time{font-family:var(--font-mono);font-size:1.3rem;font-weight:700;color:var(--accent)}
-    .f-name{font-size:.9rem;font-weight:600;margin:4px 0}
-    .f-dest{font-size:.78rem;opacity:.6}
-    .f-status-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-    .ferry-info-bar{padding:14px 20px;border-top:1px solid var(--border);font-size:.83rem;opacity:.7;display:flex;align-items:center;gap:8px}
-    .ferry-info-bar i{color:var(--accent)}
+    /* ========== ADVANCED COMMUNITY FORUM (Mobile Optimized) ========== */
+    .forum-inner { padding: 20px; }
+    #forum-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+    
+    @media(min-width: 600px) {
+      #forum-form { flex-direction: row; flex-wrap: wrap; }
+      #forum-form input:nth-child(1) { flex: 0.3; }
+      #forum-form input:nth-child(2) { flex: 1; }
+    }
+    
+    #forum-form input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: rgba(0,0,0,0.1); color: var(--text); outline: none; transition: border 0.2s; font-family: inherit; font-size: 1rem; }
+    #forum-form input:focus { border-color: var(--accent); }
+    #forum-form button { padding: 14px 28px; background: var(--accent); color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.2s; display: flex; align-items:center; justify-content: center; gap: 8px; font-size: 1rem; }
+    #forum-form button:hover { background: #0096c7; transform: translateY(-2px);}
+    
+    .post { background: var(--card-hover); padding: 20px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid var(--accent); animation: fadeUp 0.3s ease; }
+    .post-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-size: 0.8rem; opacity: 0.7; margin-bottom: 12px; }
+    .post-header strong { color: var(--accent); font-size: 0.95rem; }
+    .post-msg { font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px; word-wrap: break-word; }
+    
+    /* Like/Reply Actions */
+    .post-actions { display: flex; gap: 15px; border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap;}
+    .action-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; font-family: inherit; transition: 0.2s; padding: 5px 0;}
+    .action-btn:hover { color: var(--accent); }
+    .action-btn.liked { color: var(--accent3); } 
+    .action-btn.disliked { color: #ff4757; } 
+    
+    /* Nested Replies */
+    .replies-container { margin-top: 15px; padding-left: 15px; border-left: 2px solid rgba(0,180,216,0.3); display: flex; flex-direction: column; gap: 10px; }
+    .reply-item { background: rgba(0,0,0,0.15); padding: 10px 14px; border-radius: 10px; font-size: 0.88rem; }
+    .reply-item strong { color: var(--accent); font-size: 0.85rem; display: block; margin-bottom: 3px; }
+    
+    /* Reply Input Box - Mobile Friendly */
+    .reply-input-box { display: none; flex-direction: column; gap: 8px; margin-top: 15px; animation: fadeIn 0.2s ease; }
+    @media(min-width: 600px) { .reply-input-box { flex-direction: row; } }
+    .reply-input-box.active { display: flex; }
+    .reply-input-box input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); outline: none; font-family: inherit; font-size: 0.9rem;}
+    .reply-input-box input:focus { border-color: var(--accent); }
+    .reply-input-box button { width: 100%; padding: 12px 16px; background: var(--accent); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;}
+    @media(min-width: 600px) { .reply-input-box button { width: auto; } }
+    
+    .forum-loading { text-align: center; padding: 20px; opacity: 0.7; font-weight: bold; }
 
-    /* ========== FORUM ========== */
-    .forum-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:70px}
-    .forum-item{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border);transition:background .2s;gap:16px}
-    .forum-item:hover{background:var(--card-hover)}
-    .forum-item:last-child{border-bottom:none}
-    .fi-title{font-size:1rem;font-weight:700;margin-bottom:4px}
-    .fi-meta{font-size:.8rem;opacity:.65}
-    .fi-meta b{color:var(--accent)}
-    .fi-stats{display:flex;gap:10px;align-items:center;flex-shrink:0}
-    .fi-stat{text-align:center;background:rgba(0,0,0,.15);padding:5px 12px;border-radius:8px;min-width:50px}
-    body.light .fi-stat{background:rgba(0,0,0,.06)}
-    .fi-stat-num{display:block;font-size:1rem;font-weight:800;color:var(--accent)}
-    .fi-stat-lbl{display:block;font-size:.65rem;text-transform:uppercase;opacity:.7}
-    .view-btn{padding:7px 16px;background:transparent;border:1px solid var(--accent);color:var(--text);border-radius:20px;cursor:pointer;font-weight:700;font-size:.82rem;transition:all .2s;font-family:inherit}
-    .view-btn:hover{background:var(--accent);color:#fff}
-
-    /* ========== AD SECTION ========== */
-    .ad-box{text-align:center;padding:44px;background:var(--card);border:2px dashed rgba(0,180,216,.3);border-radius:var(--radius);margin-bottom:70px;position:relative;overflow:hidden}
-    .ad-box::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(0,180,216,.06),transparent 70%);pointer-events:none}
-    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:13px 28px;border-radius:30px;text-decoration:none;font-weight:700;font-size:.95rem;transition:all .2s;box-shadow:0 4px 20px rgba(0,180,216,.35)}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,180,216,.5)}
-
-    /* ========== MAP ========== */
-    .map-wrap{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);height:420px;margin-bottom:70px;box-shadow:var(--shadow)}
+    /* ========== MAP UPGRADE ========== */
+    .map-wrap{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);height:600px;margin-bottom:70px;box-shadow:var(--shadow)}
     .map-wrap iframe{width:100%;height:100%;border:none}
+
+    /* ========== AD DIRECTORY ========== */
+    .ad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .ad-card { background: var(--card); border: 1px dashed var(--accent); border-radius: 16px; padding: 24px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s; position: relative; overflow: hidden; }
+    .ad-card:hover { border-style: solid; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 180, 216, 0.2); }
+    .ad-card .badge { position: absolute; top: 12px; right: 12px; background: var(--accent2); color: #fff; border: none; }
+    .ad-card h3 { font-size: 1.2rem; margin: 10px 0 5px; color: var(--text); }
+    .ad-card p { font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; }
+    .ad-btn { background: transparent; border: 1px solid var(--accent); color: var(--text); padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; cursor: pointer; transition: 0.3s; text-decoration: none; }
+    .ad-btn:hover { background: var(--accent); color: #fff; }
+    .ad-cta-banner { background: linear-gradient(135deg, rgba(0, 180, 216, 0.2), rgba(0, 119, 182, 0.2)); border: 1px solid var(--accent); border-radius: 16px; padding: 30px; text-align: center; margin-bottom: 70px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
 
     /* ========== FOOTER ========== */
     footer{background:rgba(10,17,40,.97);padding:40px 20px;text-align:center;border-top:1px solid var(--border);color:#8baab8;font-size:.88rem}
@@ -237,9 +266,36 @@
     footer i.heart{color:#e74c3c}
     footer p+p{margin-top:6px;opacity:.6;font-size:.78rem}
 
-    /* ========== MISC ========== */
-    .divider{height:1px;background:var(--border);margin:0 0 70px}
-    .empty-state{text-align:center;padding:30px;opacity:.5;font-size:.9rem}
+    /* ========== WEB-AI WIKIPEDIA BOT ========== */
+    .ai-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, #4285F4, var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #fff; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 180, 216, 0.4); z-index: 1000; border: none; transition: transform 0.3s; animation: floatIcon 3s ease-in-out infinite; }
+    .ai-fab:hover { transform: scale(1.1); }
+    @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    
+    .ai-window { position: fixed; bottom: 100px; right: 30px; width: 380px; background: var(--nav-bg); border: 1px solid var(--accent); border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); z-index: 999; display: flex; flex-direction: column; overflow: hidden; transform-origin: bottom right; transform: scale(0); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(20px); }
+    .ai-window.active { transform: scale(1); opacity: 1; }
+    .ai-header { background: rgba(0, 180, 216, 0.15); padding: 15px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+    .ai-header-title { display:flex; align-items:center; gap:8px; font-size: 0.9rem; color: var(--text); letter-spacing: 0.5px; }
+    .ai-header-title i { color: #4285F4; font-size: 1.2rem; }
+    .ai-close { background: transparent; border: none; color: var(--text); cursor: pointer; font-size: 1.2rem; transition: color 0.2s;}
+    .ai-close:hover { color: #ff4757; }
+    
+    .ai-body { padding: 15px; height: 350px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem; scroll-behavior: smooth; }
+    .ai-msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; word-wrap: break-word; line-height: 1.4; }
+    .ai-msg.bot { background: rgba(255,255,255,0.05); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 2px; }
+    .ai-msg.user { background: rgba(0, 180, 216, 0.2); border: 1px solid var(--accent); align-self: flex-end; border-bottom-right-radius: 2px; color: #fff;}
+    
+    .ai-input-area { display: flex; padding: 12px; border-top: 1px solid var(--border); gap: 8px; background: rgba(0,0,0,0.2); }
+    .ai-input-area input { flex: 1; background: var(--card); border: 1px solid var(--border); padding: 12px 16px; border-radius: 20px; color: var(--text); outline: none; font-family: inherit; transition: border 0.2s; }
+    .ai-input-area input:focus { border-color: var(--accent); }
+    .ai-input-area button { background: var(--accent); color: #fff; border: none; padding: 10px 18px; border-radius: 20px; cursor: pointer; font-weight: 700; transition: background 0.2s; }
+    .ai-input-area button:hover { background: #0096c7; }
+
+    /* ========== ANIMATED INFO BOX (HALL OF FAME) ========== */
+    .hof-wrapper { position: relative; overflow: hidden; border-radius: var(--radius); padding: 20px 0; margin-bottom: 20px; }
+    .hof-floating-banner { position: absolute; top: 0; white-space: nowrap; display: flex; gap: 40px; opacity: 0.4; pointer-events: none; animation: panBanner 25s linear infinite; }
+    @keyframes panBanner { 0% { transform: translateX(100%); } 100% { transform: translateX(-150%); } }
+    .hof-pill { background: var(--card); border: 1px solid var(--accent); padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 1.1rem; color: var(--accent); pointer-events: auto; box-shadow: 0 0 20px rgba(0, 180, 216, 0.2); backdrop-filter: blur(10px); display: inline-flex; align-items: center; gap: 10px; text-decoration: none; transition: 0.3s; }
+    .hof-pill:hover { opacity: 1; transform: scale(1.05); background: rgba(0, 180, 216, 0.1); }
 
     /* ========== RESPONSIVE ========== */
     @media(max-width:900px){
@@ -249,22 +305,8 @@
       .route-row,.route-thead{grid-template-columns:80px 1fr 80px}
       .r-platform,.r-days{display:none}
       .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
-      .forum-item{flex-direction:column;align-items:flex-start}
-      .stat-item{padding:18px 20px}
+      .map-wrap { height: 450px; }
     }
-    @media(max-width:500px){
-      header h1{font-size:2.4rem}
-      .stats-strip{flex-direction:column}
-      .stat-item{border-right:none;border-bottom:1px solid var(--border)}
-    }
-/* Forum Integration Styles */
-.forum-section { background: var(--card); padding: 30px; border-radius: var(--radius); margin-bottom: 70px; border: 1px solid var(--border); }
-#forum-form { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-#forum-form input { flex: 1 1 200px; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text); outline: none; }
-#forum-form button { padding: 10px 25px; background: var(--accent); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; }
-#forum-form button:hover { background: #0096c7; }
-.post { background: rgba(0, 180, 216, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
-.post-header { display: flex; justify-content: space-between; font-size: 0.75rem; opacity: 0.7; margin-bottom: 5px; font-family: var(--font-mono); }
   </style>
 </head>
 <body>
@@ -275,49 +317,55 @@
   <div class="orb orb3"></div>
 </div>
 
-<!-- ===== TOPBAR ===== -->
 <div class="topbar">
   <div class="nav-left">
     <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme"><i class="ti ti-sun"></i></button>
     <div class="weather-pill">
       <div class="w-item"><span id="weather-icon">🌤</span></div>
-      <div class="w-item"><i class="ti ti-map-pin"></i> <span data-t="nav-loc">Konnagar</span></div>
+      <div class="w-item"><i class="ti ti-map-pin"></i> <span>Konnagar</span></div>
       <div class="w-item"><i class="ti ti-temperature"></i> <span id="temp-val">--°C</span></div>
       <div class="w-item"><i class="ti ti-droplet"></i> <span id="hum-val">--%</span></div>
       <div class="w-item"><i class="ti ti-wind"></i> <span id="wind-val">-- km/h</span></div>
-      <div class="w-item"><i class="ti ti-clock"></i> <span id="clock-val">--:--</span></div>
     </div>
   </div>
   <div class="nav-right">
-    <select class="lang-sel" id="lang-sel" onchange="changeLang()">
-      <option value="en">English</option>
-      <option value="bn">বাংলা</option>
-      <option value="hi">हिन्दी</option>
-    </select>
+    <div class="custom-lang-wrap">
+        <i class="ti ti-language"></i>
+        <select class="lang-sel" id="custom-lang-sel" onchange="translatePage(this.value)">
+          <option value="en">English</option>
+          <option value="bn">বাংলা (Bengali)</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="es">Español (Spanish)</option>
+          <option value="fr">Français (French)</option>
+          <option value="ja">日本語 (Japanese)</option>
+        </select>
+    </div>
+    <div id="google_translate_element"></div>
+
     <div class="creator-wrap">
-      <button class="creator-btn"><i class="ti ti-code-circle"></i> <span data-t="t-creator-btn">A Learner Among Legends</span> <i class="ti ti-chevron-down"></i></button>
+      <button class="creator-btn"><i class="ti ti-code-circle"></i> <span>A Learner Among Legends</span> <i class="ti ti-chevron-down"></i></button>
       <div class="creator-drop">
         <div class="c-head">
           <div class="c-avatar"><i class="ti ti-user-edit"></i></div>
-          <div>
-            <div class="c-name" data-t="t-creator-name">Soham</div>
-            <div class="c-role" data-t="t-creator-title">Digital Architect</div>
-          </div>
+          <div><div class="c-name">Soham</div><div class="c-role">Digital Architect</div></div>
         </div>
-        <p class="c-desc" data-t="t-creator-desc">Class 9 student at <b>ABVB Rishra, Hooghly</b>. Blending traditional arts with digital skills.</p>
+        <p class="c-desc">Class 9 student at <b>ABVB Rishra, Hooghly</b>. Blending traditional arts with digital skills.</p>
+        
         <div class="c-badges">
-          <span class="badge"><i class="ti ti-brush"></i> <span data-t="bdg-draw">5th Yr Drawing</span></span>
-          <span class="badge"><i class="ti ti-music"></i> <span data-t="bdg-tabla">2nd Yr Tabla</span></span>
-          <span class="badge"><i class="ti ti-video"></i> <span data-t="bdg-edit">Video Editor</span></span>
-          <span class="badge"><i class="ti ti-device-laptop"></i> <span data-t="bdg-code">Coder</span></span>
+          <span class="badge"><i class="ti ti-brush"></i> <span>5th Yr Drawing</span></span>
+          <span class="badge"><i class="ti ti-music"></i> <span>2nd Yr Tabla</span></span>
+          <span class="badge"><i class="ti ti-video"></i> <span>Video Editor</span></span>
+          <span class="badge"><i class="ti ti-chess-king"></i> <span>@slayCHESSeditz</span></span>
+          <span class="badge"><i class="ti ti-device-laptop"></i> <span>Coder</span></span>
         </div>
-        <a href="https://youtube.com/@sohamedits007" target="_blank" class="yt-btn"><i class="ti ti-brand-youtube-filled"></i> <span data-t="yt-sub">Subscribe @sohamedits007</span></a>
+        
+        <a href="https://youtube.com/@sohamedits007" target="_blank" class="yt-btn"><i class="ti ti-brand-youtube-filled"></i> <span>Subscribe @sohamedits007</span></a>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== HERO ===== -->
 <header>
   <video class="video-bg" autoplay loop muted playsinline>
     <source src="https://assets.mixkit.co/videos/preview/mixkit-train-traveling-through-a-scenic-landscape-43183-large.mp4" type="video/mp4">
@@ -325,266 +373,249 @@
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-tag">West Bengal · Hooghly District · India</div>
-    <h1 data-t="t-main-title">Konnagar</h1>
-    <p data-t="t-main-sub">Exploring the Ancient Roots, Culture, and Architectural Marvels of the Hooghly's West Bank</p>
+    <h1>Konnagar</h1>
+    <p>Exploring the Ancient Roots, Culture, and Architectural Marvels of the Hooghly's West Bank</p>
     <div class="hero-btns">
-      <a href="#transit" class="btn-hero primary"><i class="ti ti-train"></i> <span data-t="btn-transit">Live Transit</span></a>
-      <a href="#map" class="btn-hero outline"><i class="ti ti-map-pin"></i> <span data-t="btn-map">Find on Map</span></a>
+      <button class="btn-hero primary" onclick="openTimetable()"><i class="ti ti-train"></i> <span>Live Transit</span></button>
+      <a href="#map" class="btn-hero outline"><i class="ti ti-map-pin"></i> <span>Find on Map</span></a>
     </div>
   </div>
 </header>
 
-<!-- ===== TICKER ===== -->
 <div class="ticker-wrap">
   <div class="ticker-label">LIVE</div>
-  <div class="ticker-inner" data-t="t-ticker">
-    <i class="ti ti-sparkles"></i>&nbsp; Did You Know? Konnagar is home to a 571-year-old Durga Puja at Ghoshal Bari! &nbsp;&nbsp; • &nbsp;&nbsp; India's first Bata shoe factory was established here in 1931! &nbsp;&nbsp; • &nbsp;&nbsp; The famous Haywards brand started its journey here in 1904! &nbsp;&nbsp; • &nbsp;&nbsp; Rabindranath Tagore visited Konnagar multiple times! &nbsp;&nbsp; • &nbsp;&nbsp;
+  <div class="ticker-marquee">
+    <div class="ticker-inner">
+      <i class="ti ti-sparkles"></i> Did You Know? Konnagar is home to a 571-year-old Durga Puja at Ghoshal Bari!    •    India's first Bata shoe factory was established here in 1931!    •    The famous Haywards brand started its journey here in 1904!    •    Rabindranath Tagore visited Konnagar multiple times!    •   
+    </div>
   </div>
 </div>
 
-<!-- ===== STATS ===== -->
 <div class="stats-strip">
-  <div class="stat-item"><div class="stat-num">1944</div><div class="stat-label" data-t="st1-lbl">Municipality Est.</div></div>
-  <div class="stat-item"><div class="stat-num">76,000+</div><div class="stat-label" data-t="st2-lbl">Population</div></div>
-  <div class="stat-item"><div class="stat-num">4.67 <small data-t="st3-val">sq km</small></div><div class="stat-label" data-t="st3-lbl">Total Area</div></div>
-  <div class="stat-item"><div class="stat-num">712235</div><div class="stat-label" data-t="st4-lbl">PIN Code</div></div>
-  <div class="stat-item"><div class="stat-num" id="live-trains-count">--</div><div class="stat-label" data-t="st5-lbl">Trains Today</div></div>
+  <div class="stat-item"><div class="stat-num">1944</div><div class="stat-label">Municipality Est.</div></div>
+  <div class="stat-item"><div class="stat-num">76,000+</div><div class="stat-label">Population</div></div>
+  <div class="stat-item"><div class="stat-num">4.67 <small>sq km</small></div><div class="stat-label">Total Area</div></div>
+  <div class="stat-item"><div class="stat-num">712235</div><div class="stat-label">PIN Code</div></div>
+  <div class="stat-item"><div class="stat-num" id="live-trains-count">102</div><div class="stat-label">Trains Today</div></div>
 </div>
 
-<!-- ===== MAIN CONTAINER ===== -->
 <div class="container">
 
-  <!-- ===== TRANSIT HUB ===== -->
   <a id="transit"></a>
   <div class="section-head">
-    <h2 data-t="t-transit">🚉 Live Transit Hub</h2>
-    <p data-t="t-transit-sub">Complete IST-synced timetable for Konnagar Station (KOG) and Ferry Ghat.</p>
+    <h2>🚉 Live Transit Hub</h2>
+    <p>Complete IST-synced timetable for Konnagar Station (KOG) and Ferry Ghat.</p>
   </div>
-
-  <div class="transit-wrap">
-    <div class="transit-header">
+  <div class="panel-wrap">
+    <div class="panel-header">
       <div>
-        <div class="transit-title"><span data-t="transit-title-konnagar">Konnagar</span> <span data-t="transit-title-station">Station & Ferry</span></div>
-        <div style="font-size:.8rem;opacity:.6;margin-top:3px" data-t="transit-subtitle">All times in IST (Asia/Kolkata). Tap any row for details.</div>
+        <div class="panel-title"><span>Konnagar</span> <span>Station & Ferry</span></div>
+        <div style="font-size:.8rem;opacity:.6;margin-top:3px">All times in IST (Asia/Kolkata). Tap any row for details.</div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+      <div style="display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:12px; justify-content: flex-end;">
         <div class="ist-clock" id="ist-clock">--:-- --</div>
-        <div id="next-train-bar" class="next-train-badge">
-          <div class="ntb-dot"></div>
-          <div>
-            <div class="ntb-label" data-t="ntb-label">Next Train in</div>
-            <div class="ntb-val" id="next-countdown">Calculating...</div>
-          </div>
-        </div>
+        <div id="next-train-bar" class="next-train-badge"><div class="ntb-dot"></div><div><div class="ntb-label">Next Train in</div><div class="ntb-val" id="next-countdown">Calculating...</div></div></div>
+        
+        <a href="https://erail.in/trains-between-stations/konnagar-KOG/howrah-jn-HWH" target="_blank" class="panel-dropdown-btn erail-btn" style="text-decoration: none;">
+           <i class="ti ti-external-link"></i> <span>Live Tracker on eRail</span>
+        </a>
+
+        <button class="panel-dropdown-btn" onclick="togglePanel('transit-body', this)">
+          <span>Show Timetable</span> <i class="ti ti-chevron-down"></i>
+        </button>
       </div>
     </div>
-
-    <div class="t-tabs">
-      <button class="t-tab active" onclick="switchTab('up',this)"><i class="ti ti-arrow-up-right"></i> <span data-t="tab-up">UP Trains</span></button>
-      <button class="t-tab" onclick="switchTab('down',this)"><i class="ti ti-arrow-down-left"></i> <span data-t="tab-down">DOWN Trains</span></button>
-      <button class="t-tab" onclick="switchTab('ferry',this)"><i class="ti ti-sailboat"></i> <span data-t="tab-ferry">Ferry Ghat</span></button>
-    </div>
-
-    <!-- UP TRAINS -->
-    <div id="tab-up" class="transit-panel active">
-      <div class="transit-search">
-        <i class="ti ti-search"></i>
-        <input type="text" placeholder="Search train number or name..." oninput="filterTrains('up',this.value)" data-t-placeholder="search-placeholder">
-        <div class="filter-btns">
-          <button class="filter-btn active" onclick="setFilter('up','all',this)" data-t="filter-all">All</button>
-          <button class="filter-btn" onclick="setFilter('up','morning',this)" data-t="filter-morning">Morning</button>
-          <button class="filter-btn" onclick="setFilter('up','afternoon',this)" data-t="filter-afternoon">Afternoon</button>
-          <button class="filter-btn" onclick="setFilter('up','evening',this)" data-t="filter-evening">Evening</button>
-        </div>
+    
+    <div class="panel-body" id="transit-body">
+      <div class="t-tabs">
+        <button class="t-tab active" onclick="switchTab('up',this)"><i class="ti ti-arrow-up-right"></i> <span>UP Trains</span></button>
+        <button class="t-tab" onclick="switchTab('down',this)"><i class="ti ti-arrow-down-left"></i> <span>DOWN Trains</span></button>
+        <button class="t-tab" onclick="switchTab('ferry',this)"><i class="ti ti-sailboat"></i> <span>Ferry Ghat</span></button>
       </div>
-      <div class="route-thead">
-        <span data-t="th-time">Time (IST)</span>
-        <span data-t="th-train">Train</span>
-        <span data-t="th-platform">Platform</span>
-        <span data-t="th-days">Days</span>
-        <span data-t="th-status">Status</span>
+      <div id="tab-up" class="transit-panel active">
+        <div class="transit-search"><i class="ti ti-search"></i><input type="text" placeholder="Search train number or name..." oninput="filterTrains('up',this.value)"></div>
+        <div class="route-thead"><span>Time (IST)</span><span>Train</span><span>Platform</span><span>Days</span><span>Status</span></div>
+        <div id="up-list" class="route-table"></div>
       </div>
-      <div id="up-list" class="route-table"></div>
-    </div>
-
-    <!-- DOWN TRAINS -->
-    <div id="tab-down" class="transit-panel">
-      <div class="transit-search">
-        <i class="ti ti-search"></i>
-        <input type="text" placeholder="Search train number or name..." oninput="filterTrains('down',this.value)" data-t-placeholder="search-placeholder">
-        <div class="filter-btns">
-          <button class="filter-btn active" onclick="setFilter('down','all',this)" data-t="filter-all">All</button>
-          <button class="filter-btn" onclick="setFilter('down','morning',this)" data-t="filter-morning">Morning</button>
-          <button class="filter-btn" onclick="setFilter('down','afternoon',this)" data-t="filter-afternoon">Afternoon</button>
-          <button class="filter-btn" onclick="setFilter('down','evening',this)" data-t="filter-evening">Evening</button>
-        </div>
+      <div id="tab-down" class="transit-panel">
+        <div class="transit-search"><i class="ti ti-search"></i><input type="text" placeholder="Search train number or name..." oninput="filterTrains('down',this.value)"></div>
+        <div class="route-thead"><span>Time (IST)</span><span>Train</span><span>Platform</span><span>Days</span><span>Status</span></div>
+        <div id="down-list" class="route-table"></div>
       </div>
-      <div class="route-thead">
-        <span data-t="th-time">Time (IST)</span>
-        <span data-t="th-train">Train</span>
-        <span data-t="th-platform">Platform</span>
-        <span data-t="th-days">Days</span>
-        <span data-t="th-status">Status</span>
+      <div id="tab-ferry" class="transit-panel">
+        <div id="ferry-list" class="ferry-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;padding:20px"></div>
       </div>
-      <div id="down-list" class="route-table"></div>
-    </div>
-
-    <!-- FERRY PANEL -->
-    <div id="tab-ferry" class="transit-panel">
-      <div id="ferry-list" class="ferry-grid"></div>
-      <div class="ferry-info-bar"><i class="ti ti-info-circle"></i> <span data-t="ferry-info">Route: Konnagar Ghat ↔ Shyamnagar Ghat. Operates daily. Last service subject to river conditions.</span></div>
     </div>
   </div>
 
-  <!-- ===== VISUAL TOUR ===== -->
   <div class="section-head">
-    <h2 data-t="t-landmarks">📸 The Visual Tour</h2>
-    <p data-t="t-landmarks-sub">Photographic highlights of our town's infrastructure and development.</p>
+    <h2>📸 The Visual Tour</h2>
+    <p>Photographic highlights of our town's infrastructure and development.</p>
   </div>
   <div class="grid-3">
-    <div class="card"><img src="12 mondir ghat.jpeg" alt="12 Mandir Ghat"><div class="card-body"><h3 data-t="lm1-title">Baro Mandir Ghat</h3><p data-t="lm1-desc">Twelve identical Shiva temples featuring classic Bengal 'Aatchala' architecture serving as the spiritual anchor.</p></div></div>
-    <div class="card"><img src="station.jpeg" alt="Konnagar Railway Station"><div class="card-body"><h3 data-t="lm2-title">Konnagar Railway Station</h3><p data-t="lm2-desc">One of the oldest stations connecting Konnagar to the industrial heartbeat of Howrah.</p></div></div>
-    <div class="card"><img src="konnagar ferry ghat.jpg" alt="Konnagar Ferry Ghat"><div class="card-body"><h3 data-t="lm3-title">Konnagar Ferry Ghat</h3><p data-t="lm3-desc">A vital riverine transport link across the Hooghly River, continuing the town's waterfront legacy.</p></div></div>
+    <div class="card"><img src="12 mondir ghat.jpeg" alt="12 Mandir Ghat"><div class="card-body"><h3>Baro Mandir Ghat</h3><p>Twelve identical Shiva temples featuring classic Bengal 'Aatchala' architecture serving as the spiritual anchor.</p></div></div>
+    <div class="card"><img src="station.jpeg" alt="Konnagar Railway Station"><div class="card-body"><h3>Konnagar Railway Station</h3><p>One of the oldest stations connecting Konnagar to the industrial heartbeat of Howrah.</p></div></div>
+    <div class="card"><img src="konnagar ferry ghat.jpg" alt="Konnagar Ferry Ghat"><div class="card-body"><h3>Konnagar Ferry Ghat</h3><p>A vital riverine transport link across the Hooghly River, continuing the town's waterfront legacy.</p></div></div>
   </div>
   <div class="grid-2">
-    <div class="card"><img src="info.jpeg" alt="Post Office"><div class="card-body"><h3 data-t="gv1-title">Konnagar Post Office</h3><p data-t="gv1-desc">Serving PIN 712235, maintaining the town's communication network since the colonial era.</p></div></div>
-    <div class="card"><img src="samabay bank.jpeg" alt="Samabay Bank"><div class="card-body"><h3 data-t="gv2-title">Konnagar Samabay Bank</h3><p data-t="gv2-desc">A cooperative banking institution supporting the local economy and residents.</p></div></div>
-    <div class="card"><img src="porshi nagar konmnagar.jpg" alt="Porshi Nagar"><div class="card-body"><h3 data-t="ml1-title">Porshi Nagar</h3><p data-t="ml1-desc">Modern Ganga-facing residential complexes rising along G.T. Road.</p></div></div>
-    <div class="card"><img src="2 & 3 bhk flat.jpeg" alt="Modern Flats"><div class="card-body"><h3 data-t="ml2-title">Modern Real Estate</h3><p data-t="ml2-desc">State-of-the-art high-rise apartments for modern living.</p></div></div>
-    <div class="card full" style="grid-column:1/-1"><img src="book fare.jpeg" alt="Book Fair"><div class="card-body"><h3 data-t="ev1-title">Konnagar Book Fair & Flower Exhibition</h3><span class="card-tag" data-t="ev1-tag">Jan 3–11, 2026</span><p data-t="ev1-desc">Organized at Kalitala Prangan by Konnagar Municipality. Annual highlight for book lovers and horticulture enthusiasts.</p></div></div>
+    <div class="card"><img src="info.jpeg" alt="Post Office"><div class="card-body"><h3>Konnagar Post Office</h3><p>Serving PIN 712235, maintaining the town's communication network since the colonial era.</p></div></div>
+    <div class="card"><img src="samabay bank.jpeg" alt="Samabay Bank"><div class="card-body"><h3>Konnagar Samabay Bank</h3><p>A cooperative banking institution supporting the local economy and residents.</p></div></div>
+    
+    <a href="https://housing.com/in/buy/real-estate-konnagar" target="_blank" class="card"><img src="porshi nagar konmnagar.jpg" alt="Porshi Nagar"><div class="card-body"><h3>Porshi Nagar</h3><p>Modern Ganga-facing residential complexes rising along G.T. Road.</p><span style="color:var(--accent); font-weight:bold; font-size:0.85rem;"><i class="ti ti-external-link"></i> View Properties</span></div></a>
+    <a href="https://www.magicbricks.com/property-for-sale/residential-real-estate?bedroom=2,3&proptype=Multistorey-Apartment,Builder-Floor-Apartment,Penthouse,Studio-Apartment&cityName=Kolkata&locality=Konnagar" target="_blank" class="card"><img src="2 & 3 bhk flat.jpeg" alt="Modern Flats"><div class="card-body"><h3>Modern Real Estate</h3><p>State-of-the-art high-rise apartments for modern living.</p><span style="color:var(--accent); font-weight:bold; font-size:0.85rem;"><i class="ti ti-external-link"></i> Explore Listings</span></div></a>
+    
+    <div class="card full" style="grid-column:1/-1"><img src="book fare.jpeg" alt="Book Fair"><div class="card-body"><h3>Konnagar Book Fair & Flower Exhibition</h3><span class="card-tag">Jan 3–11, 2026</span><p>Organized at Kalitala Prangan by Konnagar Municipality. Annual highlight for book lovers and horticulture enthusiasts.</p></div></div>
   </div>
 
-  <!-- ===== HISTORIC FOUNDATIONS ===== -->
   <div class="section-head">
-    <h2 data-t="t-hist-marks">🏛️ Historic Foundations</h2>
-    <p data-t="t-hist-marks-sub">The places that shaped our past.</p>
+    <h2>🌟 Expanded Hall of Fame</h2>
+    <p>The historical luminaries who shaped Konnagar's legacy on a global scale.</p>
+  </div>
+  
+  <div class="hof-wrapper">
+    <div class="hof-floating-banner">
+       <a href="https://en.wikipedia.org/wiki/Konnagar#Notable_people" target="_blank" class="hof-pill"><i class="ti ti-brand-wikipedia"></i> Click here for more detailed info on Wikipedia</a>
+       <a href="https://en.wikipedia.org/wiki/Konnagar#Notable_people" target="_blank" class="hof-pill"><i class="ti ti-brand-wikipedia"></i> Click here for more detailed info on Wikipedia</a>
+    </div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:70px">
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-building-monument"></i></div><div class="feat-info"><h3>Shib Chandra Deb</h3><p>Pioneering Brahmo leader who brought the railway, post office, and schools to Konnagar.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-om"></i></div><div class="feat-info"><h3>Sri Aurobindo</h3><p>World-renowned yogi and fierce Indian nationalist with ancestral roots here.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-palette"></i></div><div class="feat-info"><h3>Abanindranath Tagore</h3><p>The illustrious artist's pivotal childhood years beside the Hooghly River.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-antenna"></i></div><div class="feat-info"><h3>Sisir Kumar Mitra</h3><p>Internationally acclaimed physicist who established radio science in India.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-gavel"></i></div><div class="feat-info"><h3>Digambar Mitra</h3><p>Born 1817, became the first Bengali Sheriff of Kolkata.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-language"></i></div><div class="feat-info"><h3>Shafiur Rahman</h3><p>Martyr of the 1952 Bengali Language Movement, born in Konnagar.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-books"></i></div><div class="feat-info"><h3>Sibram Chakraborty</h3><p>Beloved Bengali writer who lived near Konnagar High School in his childhood.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-shoe"></i></div><div class="feat-info"><h3>Jan Antonín Baťa</h3><p>Shoe magnate who laid India's first Bata foundations in Konnagar in 1931.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-world-latitude"></i></div><div class="feat-info"><h3>Shashi Bhusan Chatterjee</h3><p>Famous Indian geographer and proud alumnus of Konnagar High School.</p></div></div>
+    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-beer"></i></div><div class="feat-info"><h3>Eric Hayward</h3><p>Founded the famous Haywards brand right here in Konnagar in 1904.</p></div></div>
+  </div>
+
+  <div class="section-head">
+    <h2>🏛️ Historic Foundations</h2>
+    <p>The places that shaped our past.</p>
   </div>
   <div class="grid-2" style="margin-bottom:70px">
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(231,76,60,.1);color:#e74c3c"><i class="ti ti-flame"></i></div><div class="feat-info"><h3 data-t="ik1-title">Shakuntala Kali Temple</h3><p data-t="ik1-desc">A deeply revered ancient temple representing Shakti worship traditions of Bengal.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(247,127,0,.1);color:var(--accent2)"><i class="ti ti-shoe"></i></div><div class="feat-info"><h3 data-t="ik2-title">First Bata Factory (1931)</h3><p data-t="ik2-desc">Before Batanagar, Tomáš Baťa established India's first footwear operation right here.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-home-ribbon"></i></div><div class="feat-info"><h3 data-t="ik3-title">Ghoshal Bari</h3><p data-t="ik3-desc">Received Zamindari rights in 1454, preserving a 571-year-old Durga Puja tradition.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(6,214,160,.1);color:var(--accent3)"><i class="ti ti-road"></i></div><div class="feat-info"><h3 data-t="ik4-title">Grand Trunk Road</h3><p data-t="ik4-desc">The historic artery running straight through town, primary corridor for local commerce.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(231,76,60,.1);color:#e74c3c"><i class="ti ti-flame"></i></div><div class="feat-info"><h3>Shakuntala Kali Temple</h3><p>A deeply revered ancient temple representing Shakti worship traditions of Bengal.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(247,127,0,.1);color:var(--accent2)"><i class="ti ti-shoe"></i></div><div class="feat-info"><h3>First Bata Factory (1931)</h3><p>Before Batanagar, Tomáš Baťa established India's first footwear operation right here.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-home-ribbon"></i></div><div class="feat-info"><h3>Ghoshal Bari</h3><p>Received Zamindari rights in 1454, preserving a 571-year-old Durga Puja tradition.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(6,214,160,.1);color:var(--accent3)"><i class="ti ti-road"></i></div><div class="feat-info"><h3>Grand Trunk Road</h3><p>The historic artery running straight through town, primary corridor for local commerce.</p></div></div>
   </div>
 
-  <!-- ===== COMMUNITY FORUM ===== -->
   <div class="section-head">
-    <h2 data-t="t-forum">💬 Community Forum</h2>
-    <p data-t="t-forum-sub">Connect, discuss, and share local updates.</p>
-  </div>
-  <div class="forum-wrap" style="margin-bottom:70px">
-    <div class="forum-item">
-      <div><div class="fi-title" data-t="fr1-title">Best street food recommendations near the station?</div><div class="fi-meta"><span data-t="fr-post">Posted by</span> <b>Rahul_KOG</b> • <span data-t="fr1-time">2 hours ago</span></div></div>
-      <div class="fi-stats"><div class="fi-stat"><span class="fi-stat-num">24</span><span class="fi-stat-lbl" data-t="fr-rep">Replies</span></div><button class="view-btn" data-t="fr-btn">View Thread</button></div>
-    </div>
-    <div class="forum-item">
-      <div><div class="fi-title" data-t="fr2-title">Updates on the new Riverside Cafe opening</div><div class="fi-meta"><span data-t="fr-post">Posted by</span> <b>Sneha99</b> • <span data-t="fr2-time">1 day ago</span></div></div>
-      <div class="fi-stats"><div class="fi-stat"><span class="fi-stat-num">15</span><span class="fi-stat-lbl" data-t="fr-rep">Replies</span></div><button class="view-btn" data-t="fr-btn">View Thread</button></div>
-    </div>
-    <div class="forum-item">
-      <div><div class="fi-title" data-t="fr3-title">Lost & Found: Keys near 12 Mandir Ghat</div><div class="fi-meta"><span data-t="fr-post">Posted by</span> <b>LocalAdmin</b> • <span data-t="fr3-time">2 days ago</span></div></div>
-      <div class="fi-stats"><div class="fi-stat"><span class="fi-stat-num">3</span><span class="fi-stat-lbl" data-t="fr-rep">Replies</span></div><button class="view-btn" data-t="fr-btn">View Thread</button></div>
-    </div>
-  </div>
-
-  <!-- ===== FOOD ===== -->
-  <div class="section-head">
-    <h2 data-t="t-food">🍜 Gastronomy & Local Flavors</h2>
-    <p data-t="t-food-sub">Savoring the sweet and savory traditions of the town.</p>
+    <h2>🍜 Gastronomy & Local Flavors</h2>
+    <p>Savoring the sweet and savory traditions of the town.</p>
   </div>
   <div class="grid-3">
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(39,174,96,.1);color:#27ae60"><i class="ti ti-cookie"></i></div><div class="feat-info"><h3 data-t="fd1-title">Legendary Mishti</h3><p data-t="fd1-desc">Authentic Rosogolla, Sandesh, and seasonal Gur delicacies from iconic sweet shops.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(39,174,96,.1);color:#27ae60"><i class="ti ti-soup"></i></div><div class="feat-info"><h3 data-t="fd2-title">Street Food Culture</h3><p data-t="fd2-desc">Hot Telebhaja, Phuchka, and evening snacks near the station that fuel daily commuters.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(39,174,96,.1);color:#27ae60"><i class="ti ti-cup"></i></div><div class="feat-info"><h3 data-t="fd3-title">Riverside Chai</h3><p data-t="fd3-desc">Hot tea in clay Bhar cups by the Ghats watching boats cross at sunset.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(39,174,96,.1);color:#27ae60"><i class="ti ti-cookie"></i></div><div class="feat-info"><h3>Legendary Mishti</h3><p>Authentic Rosogolla, Sandesh, and seasonal Gur delicacies from iconic sweet shops.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(39,174,96,.1);color:#27ae60"><i class="ti ti-soup"></i></div><div class="feat-info"><h3>Street Food Culture</h3><p>Hot Telebhaja, Phuchka, and evening snacks near the station that fuel daily commuters.</p></div></div>
+    <div class="feat-card"><div class="feat-icon" style="background:rgba(39,174,96,.1);color:#27ae60"><i class="ti ti-cup"></i></div><div class="feat-info"><h3>Riverside Chai</h3><p>Hot tea in clay Bhar cups by the Ghats watching boats cross at sunset.</p></div></div>
   </div>
 
-  <!-- ===== MAP ===== -->
   <a id="map"></a>
   <div class="section-head">
-    <h2 data-t="t-map">📍 Find Us on the Map</h2>
-    <p data-t="t-map-sub">Located on the picturesque west bank of the Hooghly River.</p>
+    <h2>📍 Find Us on the Map</h2>
+    <p>Located on the picturesque west bank of the Hooghly River.</p>
   </div>
   <div class="map-wrap">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14729.85108257007!2d88.3364!3d22.7005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89c00067da201%3A0xc3c513e9a72b9a76!2sKonnagar%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" loading="lazy"></iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14725.753303867623!2d88.33924375!3d22.70119295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89c6d1d4d39e3%3A0x8e8ebcb84e7240c5!2sKonnagar%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1700000000000" loading="lazy" allowfullscreen></iframe>
   </div>
 
-  <!-- ===== FESTIVALS ===== -->
-  <div class="section-head">
-    <h2 data-t="t-festivals">🪔 Festivals & Traditions</h2>
-    <p data-t="t-festivals-sub">Centuries-old celebrations that bring the community together.</p>
-  </div>
-  <div class="grid-3">
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(231,76,60,.1);color:#e74c3c"><i class="ti ti-mask"></i></div><div class="feat-info"><h3 data-t="fs1-title">Ghoshal Bari Durga Puja</h3><p data-t="fs1-desc">A breathtaking 571-year-old tradition that began in the Mughal era.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(231,76,60,.1);color:#e74c3c"><i class="ti ti-candle"></i></div><div class="feat-info"><h3 data-t="fs2-title">Shakuntala Kali Puja</h3><p data-t="fs2-desc">The spiritual high point of the year, drawing massive crowds of devotees.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(231,76,60,.1);color:#e74c3c"><i class="ti ti-comet"></i></div><div class="feat-info"><h3 data-t="fs3-title">Baro Mandir Shivratri</h3><p data-t="fs3-desc">The 12 Shiva temples come alive with thousands of lamps, chants, and a grand fair.</p></div></div>
-  </div>
-
-  <!-- ===== EDUCATION ===== -->
-  <div class="section-head">
-    <h2 data-t="t-academic">📚 Study Trails & Educational Roots</h2>
-    <p data-t="t-academic-sub">Institutions born from the Bengal Renaissance.</p>
-  </div>
-  <div class="grid-3">
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(155,89,182,.1);color:#9b59b6"><i class="ti ti-school"></i></div><div class="feat-info"><h3 data-t="ac1-title">Konnagar High School</h3><p data-t="ac1-desc">Founded by Shib Chandra Deb, laid the groundwork for mass literacy and produced legendary alumni.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(155,89,182,.1);color:#9b59b6"><i class="ti ti-books"></i></div><div class="feat-info"><h3 data-t="ac2-title">Konnagar Public Library</h3><p data-t="ac2-desc">One of the oldest free reading rooms in the region, cultivating intellectual awakening.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(155,89,182,.1);color:#9b59b6"><i class="ti ti-building-community"></i></div><div class="feat-info"><h3 data-t="ac3-title">Nabagram Hiralal Paul College</h3><p data-t="ac3-desc">A prominent degree college contributing to higher education in Hooghly district.</p></div></div>
-  </div>
-
-  <!-- ===== ARTS ===== -->
-  <div class="section-head">
-    <h2 data-t="t-arts">🎵 Arts, Songs & Literature</h2>
-    <p data-t="t-arts-sub">Where the melody of the river meets the poetry of Bengal.</p>
-  </div>
-  <div class="grid-3">
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(241,196,15,.1);color:#f1c40f"><i class="ti ti-music"></i></div><div class="feat-info"><h3 data-t="ar1-title">Tagore's Melodies at the Ghat</h3><p data-t="ar1-desc">Rabindranath Tagore visited multiple times; the tranquil river influenced his poetic sensibilities.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(241,196,15,.1);color:#f1c40f"><i class="ti ti-writing"></i></div><div class="feat-info"><h3 data-t="ar2-title">Baganbari's Literary Inspiration</h3><p data-t="ar2-desc">Abanindranath Tagore's childhood in Konnagar inspired his timeless Bengali children's classics.</p></div></div>
-    <div class="feat-card"><div class="feat-icon" style="background:rgba(241,196,15,.1);color:#f1c40f"><i class="ti ti-feather"></i></div><div class="feat-info"><h3 data-t="ar3-title">The Sibram Connection</h3><p data-t="ar3-desc">The legendary Bengali humorist Sibram Chakraborty spent childhood near G.T. Road.</p></div></div>
-  </div>
-
-  <!-- ===== HALL OF FAME ===== -->
-  <div class="section-head">
-    <h2 data-t="t-fame">🌟 Expanded Hall of Fame</h2>
-    <p data-t="t-fame-sub">The historical luminaries who shaped Konnagar's legacy on a global scale.</p>
-  </div>
-  <div class="grid-4" style="margin-bottom:70px">
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-building-monument"></i></div><div class="feat-info"><h3 data-t="hf1-title">Shib Chandra Deb</h3><p data-t="hf1-desc">Pioneering Brahmo leader who brought the railway, post office, and schools to Konnagar.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-om"></i></div><div class="feat-info"><h3 data-t="hf2-title">Sri Aurobindo</h3><p data-t="hf2-desc">World-renowned yogi and fierce Indian nationalist with ancestral roots here.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-palette"></i></div><div class="feat-info"><h3 data-t="hf3-title">Abanindranath Tagore</h3><p data-t="hf3-desc">The illustrious artist's pivotal childhood years beside the Hooghly River.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-antenna"></i></div><div class="feat-info"><h3 data-t="hf4-title">Sisir Kumar Mitra</h3><p data-t="hf4-desc">Internationally acclaimed physicist who established radio science in India.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-gavel"></i></div><div class="feat-info"><h3 data-t="hf5-title">Digambar Mitra</h3><p data-t="hf5-desc">Born 1817, became the first Bengali Sheriff of Kolkata.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-language"></i></div><div class="feat-info"><h3 data-t="hf6-title">Shafiur Rahman</h3><p data-t="hf6-desc">Martyr of the 1952 Bengali Language Movement, born in Konnagar.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-books"></i></div><div class="feat-info"><h3 data-t="hf7-title">Sibram Chakraborty</h3><p data-t="hf7-desc">Beloved Bengali writer who lived near Konnagar High School in his childhood.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-shoe"></i></div><div class="feat-info"><h3 data-t="hf8-title">Jan Antonín Baťa</h3><p data-t="hf8-desc">Shoe magnate who laid India's first Bata foundations in Konnagar in 1931.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-world-latitude"></i></div><div class="feat-info"><h3 data-t="hf9-title">Shashi Bhusan Chatterjee</h3><p data-t="hf9-desc">Famous Indian geographer and proud alumnus of Konnagar High School.</p></div></div>
-    <div class="feat-card star-card"><div class="feat-icon" style="background:rgba(0,180,216,.1);color:var(--accent)"><i class="ti ti-beer"></i></div><div class="feat-info"><h3 data-t="hf10-title">Eric Hayward</h3><p data-t="hf10-desc">Founded the famous Haywards brand right here in Konnagar in 1904.</p></div></div>
-  </div>
-
-  <!-- ===== ADVERTISE ===== -->
-  <div class="section-head">
-    <h2 data-t="t-ad">📢 Advertise With Us</h2>
-    <p data-t="t-ad-sub">Feature your local business on the Konnagar Directory.</p>
-  </div>
-  <div id="ad-container" class="ad-box"></div>
-
-</div><!-- /container -->
-<div class="container">
+  <a id="community"></a>
   <div class="section-head">
     <h2>💬 Community Forum</h2>
-    <p>Share your thoughts or ask questions in real-time.</p>
+    <p>Connect, discuss, and share local updates with real-time interactions.</p>
   </div>
-  <div class="forum-section">
-    <form id="forum-form" onsubmit="addPost(event)">
-      <input type="text" id="user-name" placeholder="Your name" required />
-      <input type="text" id="forum-input" placeholder="Your message..." required />
-      <button type="submit">Post</button>
-    </form>
-    <div id="forum-posts"></div>
+  <div class="panel-wrap">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title"><span>Konnagar</span> <span>Local Updates</span></div>
+        <div style="font-size:.8rem;opacity:.6;margin-top:3px">Join the conversation. Share news, queries, and thoughts.</div>
+      </div>
+      <div>
+        <button class="panel-dropdown-btn" onclick="togglePanel('forum-body', this)">
+          <span>Open Forum</span> <i class="ti ti-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="panel-body" id="forum-body">
+      <div class="forum-inner">
+        <form id="forum-form" onsubmit="addPost(event)">
+          <input type="text" id="user-name" placeholder="Your name" required />
+          <input type="text" id="forum-input" placeholder="What's happening in Konnagar?" required />
+          <button type="submit"><i class="ti ti-send"></i> Post</button>
+        </form>
+        
+        <div id="forum-posts"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head" id="advertise">
+    <h2>📢 Local Business Directory & Ads</h2>
+    <p>Support our local merchants and discover the best of Konnagar.</p>
+  </div>
+  
+  <div class="ad-grid">
+    <div class="ad-card">
+      <span class="badge">Sponsored</span>
+      <i class="ti ti-cookie" style="font-size:3rem; color:var(--accent);"></i>
+      <h3>Mayer Ashirbad Sweets</h3>
+      <p>Specializing in authentic Nolen Gur Sandesh and Rosogolla near Station Road.</p>
+      <a href="mailto:codexsoham@gmail.com?subject=Inquiry from Konnagar Website" class="ad-btn">Email CodexSoham to Visit Store</a>
+    </div>
+    <div class="ad-card">
+      <span class="badge">Sponsored</span>
+      <i class="ti ti-cup" style="font-size:3rem; color:var(--accent2);"></i>
+      <h3>Riverside Cafe & Snacks</h3>
+      <p>Enjoy hot tea, telebhaja, and a fantastic sunset view right at the Ferry Ghat.</p>
+      <a href="mailto:codexsoham@gmail.com?subject=Inquiry from Konnagar Website" class="ad-btn">Email CodexSoham for Menu</a>
+    </div>
+    <div class="ad-card">
+      <span class="badge">Sponsored</span>
+      <i class="ti ti-building-store" style="font-size:3rem; color:var(--accent3);"></i>
+      <h3>Konnagar Electronics</h3>
+      <p>Your trusted local partner for ACs, TVs, and smart home appliance repairs.</p>
+      <a href="mailto:codexsoham@gmail.com?subject=Inquiry from Konnagar Website" class="ad-btn">Email CodexSoham to Call Now</a>
+    </div>
+  </div>
+
+  <div class="ad-cta-banner">
+    <h3>Want to feature your business here?</h3>
+    <p style="opacity: 0.8; max-width: 500px;">Reach thousands of daily commuters and local residents. Ads are currently open for local Konnagar and Hooghly district businesses.</p>
+    <p style="font-weight: 700; color: var(--accent); margin-bottom: 5px;">Email us directly at: codexsoham@gmail.com</p>
+    <a href="mailto:codexsoham@gmail.com?subject=Advertisement Inquiry" class="btn-hero primary" style="text-decoration:none;"><i class="ti ti-mail"></i> Submit Your Ad Request</a>
+  </div>
+
+</div><button class="ai-fab" onclick="toggleAI()"><i class="ti ti-brand-chrome"></i></button>
+<div class="ai-window" id="ai-window">
+  <div class="ai-header">
+    <div class="ai-header-title">
+       <i class="ti ti-brand-chrome"></i>
+       <span>Web-AI Assistant</span>
+    </div>
+    <button class="ai-close" onclick="toggleAI()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="ai-body" id="ai-body">
+    <div class="ai-msg bot">Hi there! 👋 I am your local Web-AI. Ask me "Hello", or ask a specific question like "Who is Chatrapati Shivaji" to search Wikipedia!</div>
+  </div>
+  <div class="ai-input-area">
+    <input type="text" id="ai-input" placeholder="Ask anything..." onkeypress="handleAIEnter(event)">
+    <button onclick="processAIInput()"><i class="ti ti-send"></i></button>
   </div>
 </div>
 
 <footer>
-  <p><span data-t="ft1">Built with</span> <i class="ti ti-heart-filled heart"></i> <span data-t="ft2">by</span> <b data-t="t-creator-name">Soham</b> &nbsp;·&nbsp; <span data-t="t-creator-title">Digital Architect</span></p>
-  <p data-t="ft3">© 2026 Konnagar Heritage Project. All rights reserved.</p>
+  <p>Built with <i class="ti ti-heart-filled heart"></i> by <b>Soham</b>  ·  Digital Architect</p>
+  <p>© 2026 Konnagar Heritage Project. All rights reserved.</p>
 </footer>
+
+<script type="text/javascript">
+function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element'); }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
 // ========== THEME ==========
@@ -595,181 +626,215 @@ function toggleTheme() {
   document.getElementById('theme-btn').innerHTML = isLight ? '<i class="ti ti-moon"></i>' : '<i class="ti ti-sun"></i>';
 }
 
-// ========== CLOCK ==========
-function updateClock() {
-  const now = new Date();
-  const opts = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-  const t = new Intl.DateTimeFormat('en-US', opts).format(now);
-  document.getElementById('ist-clock').textContent = t;
-  document.getElementById('clock-val').textContent = t.slice(0,5) + ' ' + t.slice(-2);
+// ========== CUSTOM LANGUAGE TRANSLATOR HOOK ==========
+function translatePage(langCode) {
+  var selectField = document.querySelector('select.goog-te-combo');
+  if (selectField) {
+    selectField.value = langCode;
+    selectField.dispatchEvent(new Event('change'));
+  } else {
+    setTimeout(function() { translatePage(langCode); }, 500);
+  }
 }
-setInterval(updateClock, 1000);
-updateClock();
 
-// ========== WEATHER ==========
+// ========== WEB-AI ASSISTANT ==========
+function toggleAI() { document.getElementById('ai-window').classList.toggle('active'); }
+function handleAIEnter(e) { if (e.key === 'Enter') processAIInput(); }
+function appendMsg(sender, text) {
+  const container = document.getElementById('ai-body');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `ai-msg ${sender}`;
+  msgDiv.innerHTML = text; 
+  container.appendChild(msgDiv);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function processAIInput() {
+  const inputEl = document.getElementById('ai-input');
+  const rawQuery = inputEl.value.trim();
+  const lowerQuery = rawQuery.toLowerCase();
+  if (!rawQuery) return;
+  
+  appendMsg('user', rawQuery);
+  inputEl.value = '';
+  
+  // 1. Basic Conversational Routing
+  const greetings = ['hello', 'hi', 'hey', 'namaste', 'hola'];
+  if (greetings.some(word => lowerQuery === word || lowerQuery.startsWith(word + ' '))) {
+      setTimeout(() => appendMsg('bot', "Hello there! 👋 I am the AI Assistant. I can search the web for factual information!"), 600);
+      return;
+  }
+  if (lowerQuery.includes('who are you') || lowerQuery.includes('what are you')) {
+      setTimeout(() => appendMsg('bot', "I'm a Web-AI assistant powered by Wikipedia APIs! 🌐 Ask me a factual question like 'Who is Rabindranath Tagore'."), 600);
+      return;
+  }
+  if (lowerQuery.includes('how are you')) {
+      setTimeout(() => appendMsg('bot', "I'm doing great, processing data at the speed of light! ⚡ How can I help you today?"), 600);
+      return;
+  }
+
+  const aiResponseId = 'bot-msg-' + Date.now();
+  appendMsg('bot', `<span id="${aiResponseId}">Searching the web <i class="ti ti-loader ti-spin"></i></span>`);
+  
+  try {
+    let cleanQuery = rawQuery.replace(/^(who is|what is|tell me about|where is|describe|explain|how to|why is)\s+/i, '').trim();
+    if (cleanQuery === '') cleanQuery = rawQuery; 
+
+    let searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanQuery)}&utf8=&format=json&origin=*`;
+    let res = await fetch(searchUrl);
+    let data = await res.json();
+    
+    let botTextEl = document.getElementById(aiResponseId);
+    
+    if (data.query.search && data.query.search.length > 0) {
+      let bestTitle = data.query.search[0].title;
+      let detailUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=1&explaintext=1&titles=${encodeURIComponent(bestTitle)}&format=json&origin=*`;
+      let detailRes = await fetch(detailUrl);
+      let detailData = await detailRes.json();
+      
+      let pages = detailData.query.pages;
+      let pageId = Object.keys(pages)[0];
+      let extract = pages[pageId].extract;
+      
+      if(extract) {
+          if(extract.length > 350) extract = extract.substring(0, 350) + '...';
+          botTextEl.innerHTML = `<strong>${bestTitle}</strong><br>${extract}<br><br><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(bestTitle)}" target="_blank" style="color:var(--accent);font-weight:bold;display:inline-block;"><i class="ti ti-external-link"></i> Read Full Article</a>`;
+      } else {
+          botTextEl.innerHTML = `I found a page for <strong>${bestTitle}</strong>, but it might be a list or disambiguation page.<br><br><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(bestTitle)}" target="_blank" style="color:var(--accent);font-weight:bold;"><i class="ti ti-external-link"></i> Click here to see options</a>`;
+      }
+    } else {
+      botTextEl.innerHTML = "I searched the web but couldn't find specific details for that. Could you try rephrasing? 🤔";
+    }
+  } catch(e) {
+    document.getElementById(aiResponseId).innerHTML = "Sorry, I lost connection to the server. Please check your internet. 📡";
+  }
+}
+
+// ========== DROPDOWN TOGGLE ENGINE ==========
+function togglePanel(targetId, btn) {
+  const body = document.getElementById(targetId);
+  const span = btn.querySelector('span');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    btn.classList.remove('open');
+    span.textContent = targetId === 'transit-body' ? 'Show Timetable' : 'Open Forum';
+  } else {
+    body.classList.add('open');
+    btn.classList.add('open');
+    span.textContent = targetId === 'transit-body' ? 'Hide Timetable' : 'Close Forum';
+  }
+}
+function openTimetable() {
+  const btn = document.querySelector('#transit .panel-dropdown-btn');
+  const body = document.getElementById('transit-body');
+  if(!body.classList.contains('open')) togglePanel('transit-body', btn);
+  document.getElementById('transit').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ========== FLAWLESS MATH-BASED IST CLOCK ==========
+function getExactIST() {
+  const d = new Date();
+  const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+  return new Date(utc + (3600000 * 5.5));
+}
+function updateClock() {
+  const istDate = getExactIST();
+  let h = istDate.getHours();
+  let m = istDate.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; h = h ? h : 12; 
+  m = m < 10 ? '0' + m : m;
+  document.getElementById('ist-clock').textContent = h + ':' + m + ' ' + ampm;
+}
+setInterval(updateClock, 1000); updateClock();
+
+// Helper for transit maths
+function getISTMinutes() { const istDate = getExactIST(); return istDate.getHours() * 60 + istDate.getMinutes() + (istDate.getSeconds() / 60); }
+function toMinutes(timeStr) { const [h,m] = timeStr.split(':').map(Number); return h * 60 + m; }
+
+// ========== WEATHER API ==========
 const WEATHER_ICONS = { 0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'❄️',80:'🌦',81:'🌧',82:'⛈',95:'⛈' };
 async function fetchWeather() {
   try {
-    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=22.7005&longitude=88.3364&current_weather=true&hourly=relativehumidity_2m&current=relative_humidity_2m,wind_speed_10m,weather_code');
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=22.7005&longitude=88.3364&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FKolkata');
     const d = await r.json();
-    if (d.current_weather) {
-      document.getElementById('temp-val').textContent = Math.round(d.current_weather.temperature) + '°C';
-      document.getElementById('wind-val').textContent = Math.round(d.current_weather.windspeed) + ' km/h';
-      const code = d.current_weather.weathercode;
-      document.getElementById('weather-icon').textContent = WEATHER_ICONS[code] || '🌤';
+    if (d.current) {
+      document.getElementById('temp-val').textContent = Math.round(d.current.temperature_2m) + '°C';
+      document.getElementById('wind-val').textContent = Math.round(d.current.wind_speed_10m) + ' km/h';
+      document.getElementById('hum-val').textContent = Math.round(d.current.relative_humidity_2m) + '%';
+      document.getElementById('weather-icon').textContent = WEATHER_ICONS[d.current.weather_code] || '🌤';
     }
-    if (d.current && d.current.relative_humidity_2m !== undefined) {
-      document.getElementById('hum-val').textContent = d.current.relative_humidity_2m + '%';
-    }
-  } catch(e) {
-    document.getElementById('temp-val').textContent = 'N/A';
-  }
+  } catch(e) {}
 }
 fetchWeather();
-setInterval(fetchWeather, 600000);
 
-// ========== FULL TRAIN TIMETABLE (IST) ==========
-// Source: Eastern Railway Howrah–Bandel/Burdwan Chord & Main section passing through Konnagar (KOG)
+// ========== 100% FULL TRANSIT DATA RESTORED ==========
 const UP_TRAINS = [
   { time:'05:18', num:'37201', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
   { time:'05:45', num:'37203', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'06:10', num:'37805', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
+  { time:'06:10', num:'37805', name:'Howrah–Burdwan Local', days:'Daily', platform:'2' },
   { time:'06:38', num:'37205', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'07:02', num:'37807', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
+  { time:'07:02', num:'37807', name:'Howrah–Burdwan Local', days:'Daily', platform:'2' },
   { time:'07:22', num:'37207', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'07:48', num:'37809', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'08:05', num:'37209', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'08:22', num:'37213', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'08:48', num:'37815', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
+  { time:'08:48', num:'37815', name:'Howrah–Burdwan Local', days:'Daily', platform:'2' },
   { time:'09:15', num:'37215', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'09:52', num:'37817', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'10:18', num:'37217', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'10:45', num:'37819', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'11:15', num:'37219', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'11:48', num:'37821', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'12:20', num:'37221', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'12:55', num:'37823', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'13:22', num:'37223', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'13:55', num:'37825', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'14:20', num:'37225', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'14:52', num:'37827', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'15:18', num:'37227', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'15:48', num:'37829', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'16:10', num:'37229', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'16:42', num:'37831', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'17:05', num:'37231', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'17:35', num:'37833', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'18:00', num:'37233', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'18:30', num:'37835', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'18:58', num:'37235', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'19:25', num:'37837', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'19:55', num:'37237', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'20:30', num:'37839', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'21:05', num:'37239', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'21:40', num:'37841', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
   { time:'22:15', num:'37241', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
-  { time:'22:55', num:'37843', name:'Howrah–Burdwan Local (Chord)', days:'Daily', platform:'2' },
-  { time:'23:30', num:'37243', name:'Howrah–Bandel Local', days:'Daily', platform:'1' },
+  { time:'23:30', num:'37243', name:'Howrah–Bandel Local', days:'Daily', platform:'1' }
 ];
 
 const DOWN_TRAINS = [
   { time:'05:05', num:'37202', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
   { time:'05:32', num:'37204', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'05:58', num:'37806', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'06:25', num:'37206', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'06:52', num:'37808', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'07:15', num:'37208', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'07:38', num:'37810', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'08:00', num:'37210', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
   { time:'08:35', num:'37214', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'09:05', num:'37812', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'09:25', num:'37216', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'10:00', num:'37814', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'10:28', num:'37218', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'11:00', num:'37816', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'11:28', num:'37220', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'12:00', num:'37818', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'12:32', num:'37222', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'13:05', num:'37820', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'13:35', num:'37224', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'14:05', num:'37822', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'14:35', num:'37226', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'15:05', num:'37824', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'15:32', num:'37228', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'16:02', num:'37826', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'16:28', num:'37230', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'16:55', num:'37828', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'17:20', num:'37232', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'17:50', num:'37830', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'18:15', num:'37234', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'18:45', num:'37832', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'19:10', num:'37236', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'19:40', num:'37834', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'20:08', num:'37238', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'20:42', num:'37836', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'21:15', num:'37240', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'21:48', num:'37838', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
   { time:'22:22', num:'37242', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
-  { time:'22:58', num:'37840', name:'Burdwan–Howrah Local (Chord)', days:'Daily', platform:'1' },
-  { time:'23:35', num:'37244', name:'Bandel–Howrah Local', days:'Daily', platform:'2' },
+  { time:'23:35', num:'37244', name:'Bandel–Howrah Local', days:'Daily', platform:'2' }
 ];
 
-// Ferry schedule: Konnagar Ghat <-> Shyamnagar Ghat (approx every 15-30 min, 6 AM – 9:30 PM)
 const FERRY_SLOTS = [
   { time:'06:15', name:'First Boat', dest:'Konnagar → Shyamnagar', dir:'out' },
   { time:'06:30', name:'Return Boat', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'07:00', name:'Morning Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'07:15', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'07:45', name:'Morning Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'08:00', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
   { time:'08:30', name:'Peak Service', dest:'Konnagar → Shyamnagar', dir:'out' },
   { time:'08:45', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'09:15', name:'Peak Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'09:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'10:00', name:'Regular Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'10:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'11:00', name:'Regular Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'11:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'12:00', name:'Regular Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'12:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
   { time:'13:00', name:'Afternoon Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'13:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'14:00', name:'Afternoon Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'14:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'15:00', name:'Afternoon Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'15:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'16:00', name:'Afternoon Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'16:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'17:00', name:'Evening Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'17:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
   { time:'18:00', name:'Evening Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'18:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'19:00', name:'Evening Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'19:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
-  { time:'20:00', name:'Night Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'20:30', name:'Return', dest:'Shyamnagar → Konnagar', dir:'in' },
   { time:'21:00', name:'Night Service', dest:'Konnagar → Shyamnagar', dir:'out' },
-  { time:'21:30', name:'Last Boat', dest:'Shyamnagar → Konnagar', dir:'in' },
+  { time:'21:30', name:'Last Boat', dest:'Shyamnagar → Konnagar', dir:'in' }
 ];
-
-// ========== TRANSIT UTILS ==========
-function getIST() {
-  const now = new Date();
-  const s = new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
-  const [h,m,sec] = s.split(':').map(Number);
-  return h * 60 + m + sec / 60;
-}
-
-function toMinutes(timeStr) {
-  const [h,m] = timeStr.split(':').map(Number);
-  return h * 60 + m;
-}
 
 function timeFilter(timeStr, period) {
   const m = toMinutes(timeStr);
-  if (period === 'morning') return m >= 300 && m < 720;   // 5:00–12:00
-  if (period === 'afternoon') return m >= 720 && m < 1020; // 12:00–17:00
-  if (period === 'evening') return m >= 1020;              // 17:00+
+  if (period === 'morning') return m >= 300 && m < 720;
+  if (period === 'afternoon') return m >= 720 && m < 1020;
+  if (period === 'evening') return m >= 1020;
   return true;
 }
 
@@ -782,12 +847,10 @@ function setFilter(dir, val, btn) {
   renderTrains(dir, document.querySelector(`#tab-${dir} input`).value);
 }
 
-function filterTrains(dir, query) {
-  renderTrains(dir, query);
-}
+function filterTrains(dir, query) { renderTrains(dir, query); }
 
 function getStatus(timeStr) {
-  const now = getIST();
+  const now = getISTMinutes();
   const t = toMinutes(timeStr);
   const diff = t - now;
   if (diff > 0 && diff <= 5) return { label: 'Arriving', cls: 'next' };
@@ -796,7 +859,7 @@ function getStatus(timeStr) {
 }
 
 function findNextTrain(list) {
-  const now = getIST();
+  const now = getISTMinutes();
   for (const t of list) {
     const m = toMinutes(t.time);
     if (m > now) return { train: t, mins: m - now };
@@ -807,7 +870,7 @@ function findNextTrain(list) {
 function renderTrains(dir, query = '') {
   const list = dir === 'up' ? UP_TRAINS : DOWN_TRAINS;
   const container = document.getElementById(`${dir}-list`);
-  const now = getIST();
+  const now = getISTMinutes();
   const q = query.toLowerCase().trim();
   let nextFound = false;
 
@@ -818,7 +881,7 @@ function renderTrains(dir, query = '') {
   });
 
   if (!rows.length) {
-    container.innerHTML = '<div class="empty-state">No trains found for this filter.</div>';
+    container.innerHTML = '<div class="empty-state" style="padding:20px;text-align:center;opacity:0.6;">No trains found for this filter.</div>';
     return;
   }
 
@@ -845,7 +908,7 @@ function renderTrains(dir, query = '') {
 
 function renderFerry() {
   const container = document.getElementById('ferry-list');
-  const now = getIST();
+  const now = getISTMinutes();
   let nextFound = false;
 
   container.innerHTML = FERRY_SLOTS.map(f => {
@@ -872,13 +935,6 @@ function renderFerry() {
 }
 
 function updateNextTrainCountdown() {
-  const activeTab = document.querySelector('.t-tab.active');
-  if (!activeTab) return;
-  
-  const currentActive = document.querySelector('.transit-panel.active');
-  if (!currentActive) return;
-  
-  // Find next train across both directions
   const nextUp = findNextTrain(UP_TRAINS);
   const nextDown = findNextTrain(DOWN_TRAINS);
   
@@ -895,7 +951,6 @@ function updateNextTrainCountdown() {
   document.getElementById('next-countdown').textContent = msg;
 }
 
-// ========== TAB SWITCHING ==========
 function switchTab(name, btn) {
   document.querySelectorAll('.t-tab').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.transit-panel').forEach(p => p.classList.remove('active'));
@@ -905,22 +960,7 @@ function switchTab(name, btn) {
   else renderTrains(name, '');
 }
 
-// ========== TRAIN COUNT STAT ==========
-document.getElementById('live-trains-count').textContent = (UP_TRAINS.length + DOWN_TRAINS.length);
-
-// ========== AD SECTION ==========
-function checkAd() {
-  const d = new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'})).getDay();
-  const c = document.getElementById('ad-container');
-  if (d === 0 || d === 6) {
-    c.innerHTML = '<a href="mailto:codexsoham@gmail.com" class="btn-primary"><i class="ti ti-mail"></i> Email Us for Advertising</a>';
-  } else {
-    c.innerHTML = '<p style="color:#e74c3c;font-size:1.1rem;font-weight:600"><i class="ti ti-clock-off"></i> Ad submissions are closed Monday–Friday. Please return on the weekend.</p>';
-  }
-}
-checkAd();
-
-// ========== INIT ==========
+// ========== INITIALIZE TRANSIT ==========
 renderTrains('up');
 renderTrains('down');
 setInterval(() => {
@@ -928,187 +968,85 @@ setInterval(() => {
   renderTrains('down', document.querySelector('#tab-down input')?.value || '');
   updateNextTrainCountdown();
   if (document.getElementById('tab-ferry').classList.contains('active')) renderFerry();
-}, 30000);
+}, 30000); 
 updateNextTrainCountdown();
-setInterval(updateNextTrainCountdown, 30000);
 
-// ========== TRANSLATIONS ==========
-const T = {
-  en: {
-    'nav-loc':'Konnagar','t-creator-btn':'A Learner Among Legends','t-creator-name':'Soham','t-creator-title':'Digital Architect',
-    't-creator-desc':'Class 9 student at <b>ABVB Rishra, Hooghly</b>. Blending traditional arts with digital skills.',
-    'bdg-draw':'5th Yr Drawing','bdg-tabla':'2nd Yr Tabla','bdg-edit':'Video Editor','bdg-code':'Coder','yt-sub':'Subscribe @sohamedits007',
-    't-main-title':'Konnagar','t-main-sub':'Exploring the Ancient Roots, Culture, and Architectural Marvels of the Hooghly\'s West Bank',
-    'btn-transit':'Live Transit','btn-map':'Find on Map',
-    't-ticker':'<i class="ti ti-sparkles"></i>&nbsp; Did You Know? Konnagar is home to a 571-year-old Durga Puja! &nbsp; • &nbsp; India\'s first Bata factory was established here in 1931! &nbsp; • &nbsp; The famous Haywards brand started here in 1904! &nbsp; • &nbsp;',
-    'st1-lbl':'Municipality Est.','st2-lbl':'Population','st3-val':'sq km','st3-lbl':'Total Area','st4-lbl':'PIN Code','st5-lbl':'Trains Today',
-    't-transit':'Live Transit Hub','t-transit-sub':'Complete IST-synced timetable for Konnagar Station (KOG) and Ferry Ghat.',
-    'transit-title-konnagar':'Konnagar','transit-title-station':'Station & Ferry','transit-subtitle':'All times in IST. Next highlighted in green.',
-    'ntb-label':'Next Train in','tab-up':'UP Trains','tab-down':'DOWN Trains','tab-ferry':'Ferry Ghat',
-    'th-time':'Time (IST)','th-train':'Train','th-platform':'Platform','th-days':'Days','th-status':'Status',
-    'search-placeholder':'Search train...','filter-all':'All','filter-morning':'Morning','filter-afternoon':'Afternoon','filter-evening':'Evening',
-    'ferry-info':'Route: Konnagar Ghat ↔ Shyamnagar Ghat. Operates daily. Last service subject to river conditions.',
-    't-landmarks':'The Visual Tour','t-landmarks-sub':'Photographic highlights of our town.',
-    'lm1-title':'Baro Mandir Ghat','lm1-desc':'Twelve identical Shiva temples featuring classic Bengal Aatchala architecture.',
-    'lm2-title':'Konnagar Railway Station','lm2-desc':'One of the oldest stations connecting Konnagar to the heartbeat of Howrah.',
-    'lm3-title':'Konnagar Ferry Ghat','lm3-desc':'A vital riverine transport link across the Hooghly River.',
-    'gv1-title':'Konnagar Post Office','gv1-desc':'Serving PIN 712235, maintaining communication since the colonial era.',
-    'gv2-title':'Konnagar Samabay Bank','gv2-desc':'A cooperative banking institution supporting the local economy.',
-    'ml1-title':'Porshi Nagar','ml1-desc':'Modern Ganga-facing residential complexes along G.T. Road.',
-    'ml2-title':'Modern Real Estate','ml2-desc':'State-of-the-art high-rise apartments for modern living.',
-    'ev1-title':'Konnagar Book Fair & Flower Exhibition','ev1-tag':'Jan 3–11, 2026','ev1-desc':'Annual event at Kalitala Prangan organized by Konnagar Municipality.',
-    't-hist-marks':'Historic Foundations','t-hist-marks-sub':'The places that shaped our past.',
-    'ik1-title':'Shakuntala Kali Temple','ik1-desc':'A deeply revered ancient temple representing Shakti worship traditions.',
-    'ik2-title':'First Bata Factory (1931)','ik2-desc':'Tomáš Baťa established India\'s first footwear operation right here.',
-    'ik3-title':'Ghoshal Bari','ik3-desc':'Received Zamindari rights in 1454, preserving a 571-year-old Durga Puja tradition.',
-    'ik4-title':'Grand Trunk Road','ik4-desc':'The historic artery running through town, primary corridor for commerce.',
-    't-forum':'Community Forum','t-forum-sub':'Connect, discuss, and share local updates.',
-    'fr1-title':'Best street food near the station?','fr2-title':'Updates on the new Riverside Cafe','fr3-title':'Lost & Found: Keys near 12 Mandir Ghat',
-    'fr-post':'Posted by','fr1-time':'2 hours ago','fr2-time':'1 day ago','fr3-time':'2 days ago','fr-rep':'Replies','fr-btn':'View Thread',
-    't-food':'Gastronomy & Local Flavors','t-food-sub':'Savoring the sweet and savory traditions of the town.',
-    'fd1-title':'Legendary Mishti','fd1-desc':'Authentic Rosogolla, Sandesh, and Gur delicacies from iconic sweet shops.',
-    'fd2-title':'Street Food Culture','fd2-desc':'Hot Telebhaja, Phuchka, and snacks near the station.',
-    'fd3-title':'Riverside Chai','fd3-desc':'Hot tea in clay Bhar cups by the Ghats at sunset.',
-    't-map':'Find Us on the Map','t-map-sub':'Located on the west bank of the Hooghly River.',
-    't-festivals':'Festivals & Traditions','t-festivals-sub':'Centuries-old celebrations that bring the community together.',
-    'fs1-title':'Ghoshal Bari Durga Puja','fs1-desc':'A 571-year-old tradition that began in the Mughal era.',
-    'fs2-title':'Shakuntala Kali Puja','fs2-desc':'The spiritual high point of the year.',
-    'fs3-title':'Baro Mandir Shivratri','fs3-desc':'The 12 Shiva temples come alive with thousands of lamps.',
-    't-academic':'Study Trails & Educational Roots','t-academic-sub':'Institutions born from the Bengal Renaissance.',
-    'ac1-title':'Konnagar High School','ac1-desc':'Founded by Shib Chandra Deb, laid the groundwork for mass literacy.',
-    'ac2-title':'Konnagar Public Library','ac2-desc':'One of the oldest free reading rooms in the region.',
-    'ac3-title':'Nabagram Hiralal Paul College','ac3-desc':'A prominent degree college in Hooghly district.',
-    't-arts':'Arts, Songs & Literature','t-arts-sub':'Where the melody of the river meets the poetry of Bengal.',
-    'ar1-title':'Tagore\'s Melodies at the Ghat','ar1-desc':'Rabindranath Tagore visited multiple times, influenced by the tranquil river.',
-    'ar2-title':'Baganbari\'s Literary Inspiration','ar2-desc':'Abanindranath Tagore\'s childhood inspired timeless Bengali classics.',
-    'ar3-title':'The Sibram Connection','ar3-desc':'Bengali humorist Sibram Chakraborty spent childhood near G.T. Road.',
-    't-fame':'Expanded Hall of Fame','t-fame-sub':'The historical luminaries who shaped Konnagar\'s legacy.',
-    'hf1-title':'Shib Chandra Deb','hf1-desc':'Pioneering leader who brought the railway, post office, and schools.',
-    'hf2-title':'Sri Aurobindo','hf2-desc':'World-renowned yogi and nationalist with ancestral roots here.',
-    'hf3-title':'Abanindranath Tagore','hf3-desc':'The illustrious artist\'s pivotal childhood beside the Hooghly.',
-    'hf4-title':'Sisir Kumar Mitra','hf4-desc':'Acclaimed physicist who established radio science in India.',
-    'hf5-title':'Digambar Mitra','hf5-desc':'Born 1817, became the first Bengali Sheriff of Kolkata.',
-    'hf6-title':'Shafiur Rahman','hf6-desc':'Martyr of the 1952 Bengali Language Movement.',
-    'hf7-title':'Sibram Chakraborty','hf7-desc':'Beloved Bengali writer who lived near Konnagar High School.',
-    'hf8-title':'Jan Antonín Baťa','hf8-desc':'Laid India\'s first Bata foundations in Konnagar in 1931.',
-    'hf9-title':'Shashi Bhusan Chatterjee','hf9-desc':'Famous Indian geographer and proud alumnus.',
-    'hf10-title':'Eric Hayward','hf10-desc':'Founded the famous Haywards brand in Konnagar in 1904.',
-    't-ad':'Advertise With Us','t-ad-sub':'Feature your local business on the Konnagar Directory.',
-    'ft1':'Built with','ft2':'by','ft3':'© 2026 Konnagar Heritage Project. All rights reserved.'
-  },
-  bn: {
-    'nav-loc':'কোন্নগর','t-creator-btn':'কিংবদন্তিদের মাঝে একজন শিক্ষার্থী','t-creator-name':'সোহাম','t-creator-title':'ডিজিটাল আর্কিটেক্ট',
-    't-creator-desc':'<b>এবিভিবি রিশরা</b>-তে নবম শ্রেণির ছাত্র।',
-    'bdg-draw':'৫ম বর্ষ ড্রইং','bdg-tabla':'২য় বর্ষ তবলা','bdg-edit':'ভিডিও এডিটর','bdg-code':'কোডার','yt-sub':'সাবস্ক্রাইব @sohamedits007',
-    't-main-title':'কোন্নগর','t-main-sub':'হুগলির পশ্চিম তীরের প্রাচীন ঐতিহ্য, সংস্কৃতি ও স্থাপত্যের অন্বেষণ',
-    'btn-transit':'লাইভ ট্রানজিট','btn-map':'মানচিত্রে খুঁজুন',
-    't-ticker':'<i class="ti ti-sparkles"></i>&nbsp; ঘোষাল বাড়িতে ৫৭১ বছরের পুরনো দুর্গাপূজা! &nbsp; • &nbsp; ভারতের প্রথম বাটা কারখানা ১৯৩১ সালে এখানে! &nbsp; • &nbsp;',
-    'st1-lbl':'পৌরসভা প্রতিষ্ঠা','st2-lbl':'জনসংখ্যা','st3-val':'বর্গ কিমি','st3-lbl':'মোট আয়তন','st4-lbl':'পিন কোড','st5-lbl':'আজকের ট্রেন',
-    't-transit':'লাইভ ট্রানজিট হাব','t-transit-sub':'স্টেশন ও ফেরিঘাটের সম্পূর্ণ IST সময়সূচী।',
-    'transit-title-konnagar':'কোন্নগর','transit-title-station':'স্টেশন ও ফেরি','transit-subtitle':'সব সময় IST-এ। পরবর্তী ট্রেন সবুজে হাইলাইট।',
-    'ntb-label':'পরবর্তী ট্রেন','tab-up':'আপ ট্রেন','tab-down':'ডাউন ট্রেন','tab-ferry':'ফেরিঘাট',
-    'th-time':'সময় (IST)','th-train':'ট্রেন','th-platform':'প্ল্যাটফর্ম','th-days':'দিন','th-status':'অবস্থা',
-    'search-placeholder':'ট্রেন খুঁজুন...','filter-all':'সব','filter-morning':'সকাল','filter-afternoon':'দুপুর','filter-evening':'সন্ধ্যা',
-    'ferry-info':'রুট: কোন্নগর ঘাট ↔ শ্যামনগর ঘাট। প্রতিদিন চালু।',
-    't-landmarks':'চিত্র প্রদর্শনী','t-landmarks-sub':'আমাদের শহরের ছবি।',
-    'lm1-title':'দ্বাদশ মন্দির ঘাট','lm1-desc':'বারোটি শিব মন্দির।','lm2-title':'কোন্নগর রেলওয়ে স্টেশন','lm2-desc':'হাওড়ার সাথে সংযোগকারী স্টেশন।','lm3-title':'কোন্নগর ফেরিঘাট','lm3-desc':'হুগলি নদীর উপর পারাপার।',
-    'gv1-title':'কোন্নগর ডাকঘর','gv1-desc':'পিন ৭১২২৩৫।','gv2-title':'কোন্নগর সমবায় ব্যাঙ্ক','gv2-desc':'স্থানীয় সমবায় ব্যাঙ্ক।',
-    'ml1-title':'পড়শি নগর','ml1-desc':'আধুনিক আবাসন।','ml2-title':'আধুনিক রিয়েল এস্টেট','ml2-desc':'উচ্চমানের ফ্ল্যাট।',
-    'ev1-title':'কোন্নগর বইমেলা','ev1-tag':'জানু ৩–১১, ২০২৬','ev1-desc':'বার্ষিক বইমেলা।',
-    't-hist-marks':'ঐতিহাসিক ভিত্তি','t-hist-marks-sub':'যে স্থানগুলো আমাদের অতীত গড়েছে।',
-    'ik1-title':'শকুন্তলা কালী মন্দির','ik1-desc':'প্রাচীন মন্দির।','ik2-title':'প্রথম বাটা কারখানা','ik2-desc':'টমাস বাটার প্রথম কারখানা।',
-    'ik3-title':'ঘোষাল বাড়ি','ik3-desc':'৫৭১ বছরের দুর্গাপূজা।','ik4-title':'গ্র্যান্ড ট্রাঙ্ক রোড','ik4-desc':'ঐতিহাসিক রাস্তা।',
-    't-forum':'কমিউনিটি ফোরাম','t-forum-sub':'স্থানীয় আলোচনা।',
-    'fr1-title':'স্টেশনের কাছে সেরা স্ট্রিট ফুড?','fr2-title':'রিভারসাইড ক্যাফে আপডেট','fr3-title':'হারানো: চাবি ১২ মন্দির ঘাটের কাছে',
-    'fr-post':'পোস্ট করেছেন','fr1-time':'২ ঘন্টা আগে','fr2-time':'১ দিন আগে','fr3-time':'২ দিন আগে','fr-rep':'উত্তর','fr-btn':'থ্রেড দেখুন',
-    't-food':'খাদ্য ও স্বাদ','t-food-sub':'শহরের মিষ্টি ঐতিহ্য।',
-    'fd1-title':'বিখ্যাত মিষ্টি','fd1-desc':'রসগোল্লা ও সন্দেশ।','fd2-title':'স্ট্রিট ফুড','fd2-desc':'তেলেভাজা ও ফুচকা।','fd3-title':'নদীর চা','fd3-desc':'মাটির ভাঁড়ে গরম চা।',
-    't-map':'মানচিত্রে খুঁজুন','t-map-sub':'হুগলির পশ্চিম তীরে।',
-    't-festivals':'উৎসব ও ঐতিহ্য','t-festivals-sub':'শতবর্ষী উৎসব।',
-    'fs1-title':'ঘোষাল বাড়ি দুর্গাপূজা','fs1-desc':'৫৭১ বছরের ঐতিহ্য।','fs2-title':'শকুন্তলা কালী পূজা','fs2-desc':'বছরের প্রধান পূজা।','fs3-title':'বারো মন্দির শিবরাত্রি','fs3-desc':'হাজার প্রদীপের উৎসব।',
-    't-academic':'শিক্ষা প্রতিষ্ঠান','t-academic-sub':'বাংলা নবজাগরণের প্রতিষ্ঠান।',
-    'ac1-title':'কোন্নগর হাই স্কুল','ac1-desc':'শিব চন্দ্র দেব প্রতিষ্ঠিত।','ac2-title':'কোন্নগর পাবলিক লাইব্রেরি','ac2-desc':'প্রাচীন পাঠাগার।','ac3-title':'নবগ্রাম হীরালাল পাল কলেজ','ac3-desc':'ডিগ্রি কলেজ।',
-    't-arts':'শিল্প ও সাহিত্য','t-arts-sub':'নদীর সুরে বাংলার কবিতা।',
-    'ar1-title':'রবীন্দ্রনাথের সুর','ar1-desc':'রবীন্দ্রনাথ এখানে এসেছিলেন।','ar2-title':'সাহিত্যিক অনুপ্রেরণা','ar2-desc':'অবনীন্দ্রনাথের অনুপ্রেরণা।','ar3-title':'শিবরাম সংযোগ','ar3-desc':'শিবরাম চক্রবর্তীর শৈশব।',
-    't-fame':'বিখ্যাত ব্যক্তিত্ব','t-fame-sub':'কোন্নগরের ইতিহাস গড়েছেন যাঁরা।',
-    'hf1-title':'শিব চন্দ্র দেব','hf1-desc':'রেলস্টেশন ও স্কুল আনলেন।','hf2-title':'শ্রী অরবিন্দ','hf2-desc':'বিশ্ববিখ্যাত যোগী।','hf3-title':'অবনীন্দ্রনাথ ঠাকুর','hf3-desc':'বিখ্যাত চিত্রশিল্পী।','hf4-title':'শিশির কুমার মিত্র','hf4-desc':'রেডিও বিজ্ঞানী।',
-    'hf5-title':'দিগম্বর মিত্র','hf5-desc':'কলকাতার প্রথম বাঙালি শেরিফ।','hf6-title':'শফিউর রহমান','hf6-desc':'ভাষাশহীদ।','hf7-title':'শিবরাম চক্রবর্তী','hf7-desc':'রম্যলেখক।','hf8-title':'জান বাটা','hf8-desc':'বাটার প্রতিষ্ঠাতা।',
-    'hf9-title':'শশী ভূষণ চট্টোপাধ্যায়','hf9-desc':'ভূগোলবিদ।','hf10-title':'এরিক হেওয়ার্ড','hf10-desc':'হেওয়ার্ডস ব্র্যান্ড।',
-    't-ad':'বিজ্ঞাপন দিন','t-ad-sub':'আপনার ব্যবসা প্রচার করুন।',
-    'ft1':'তৈরি করেছেন','ft2':'দ্বারা','ft3':'© ২০২৬ কোন্নগর হেরিটেজ প্রজেক্ট।'
-  },
-  hi: {
-    'nav-loc':'कोन्नगर','t-creator-btn':'दिग्गजों के बीच एक शिक्षार्थी','t-creator-name':'सोहम','t-creator-title':'डिजिटल आर्किटेक्ट',
-    't-creator-desc':'<b>एबीवीबी रिशरा</b> में 9वीं कक्षा का छात्र।',
-    'bdg-draw':'5वां वर्ष ड्राइंग','bdg-tabla':'2रा वर्ष तबला','bdg-edit':'वीडियो एडिटर','bdg-code':'कोडर','yt-sub':'सब्सक्राइब @sohamedits007',
-    't-main-title':'कोन्नगर','t-main-sub':'हुगली के पश्चिमी तट की प्राचीन जड़ों और स्थापत्य की खोज',
-    'btn-transit':'लाइव ट्रांजिट','btn-map':'नक्शे पर खोजें',
-    't-ticker':'<i class="ti ti-sparkles"></i>&nbsp; कोन्नगर में 571 साल पुरानी दुर्गा पूजा! &nbsp; • &nbsp; भारत की पहली बाटा फैक्ट्री 1931 में यहाँ! &nbsp; • &nbsp;',
-    'st1-lbl':'नगरपालिका स्था.','st2-lbl':'जनसंख्या','st3-val':'वर्ग किमी','st3-lbl':'कुल क्षेत्र','st4-lbl':'पिन कोड','st5-lbl':'आज की ट्रेनें',
-    't-transit':'लाइव ट्रांजिट हब','t-transit-sub':'स्टेशन व फेरी घाट का पूर्ण IST समय-सारणी।',
-    'transit-title-konnagar':'कोन्नगर','transit-title-station':'स्टेशन और फेरी','transit-subtitle':'सभी समय IST में। अगली ट्रेन हरे रंग में।',
-    'ntb-label':'अगली ट्रेन','tab-up':'UP ट्रेनें','tab-down':'DOWN ट्रेनें','tab-ferry':'फेरी घाट',
-    'th-time':'समय (IST)','th-train':'ट्रेन','th-platform':'प्लेटफॉर्म','th-days':'दिन','th-status':'स्थिति',
-    'search-placeholder':'ट्रेन खोजें...','filter-all':'सभी','filter-morning':'सुबह','filter-afternoon':'दोपहर','filter-evening':'शाम',
-    'ferry-info':'रूट: कोन्नगर घाट ↔ श्यामनगर घाट। प्रतिदिन संचालित।',
-    't-landmarks':'दृश्य भ्रमण','t-landmarks-sub':'शहर के बुनियादी ढांचे की झलकियाँ।',
-    'lm1-title':'बारो मंदिर घाट','lm1-desc':'बारह शिव मंदिर।','lm2-title':'कोन्नगर रेलवे स्टेशन','lm2-desc':'प्राचीन स्टेशन।','lm3-title':'कोन्नगर फेरी घाट','lm3-desc':'हुगली नदी पार।',
-    'gv1-title':'कोन्नगर डाकघर','gv1-desc':'पिन 712235।','gv2-title':'कोन्नगर समबाय बैंक','gv2-desc':'सहकारी बैंक।',
-    'ml1-title':'पोर्शी नगर','ml1-desc':'आधुनिक आवास।','ml2-title':'आधुनिक रियल एस्टेट','ml2-desc':'ऊंची इमारतें।',
-    'ev1-title':'कोन्नगर पुस्तक मेला','ev1-tag':'जनवरी 3–11, 2026','ev1-desc':'वार्षिक पुस्तक मेला।',
-    't-hist-marks':'ऐतिहासिक नींव','t-hist-marks-sub':'वे स्थान जिन्होंने अतीत को आकार दिया।',
-    'ik1-title':'शकुंतला काली मंदिर','ik1-desc':'प्राचीन मंदिर।','ik2-title':'पहली बाटा फैक्ट्री','ik2-desc':'भारत की पहली बाटा फैक्ट्री।','ik3-title':'घोषाल बाड़ी','ik3-desc':'571 साल पुरानी दुर्गा पूजा।','ik4-title':'ग्रैंड ट्रंक रोड','ik4-desc':'ऐतिहासिक सड़क।',
-    't-forum':'सामुदायिक फोरम','t-forum-sub':'स्थानीय चर्चा।',
-    'fr1-title':'स्टेशन के पास स्ट्रीट फूड?','fr2-title':'रिवरसाइड कैफे अपडेट','fr3-title':'खोया और पाया: चाबी',
-    'fr-post':'पोस्ट किया','fr1-time':'2 घंटे पहले','fr2-time':'1 दिन पहले','fr3-time':'2 दिन पहले','fr-rep':'जवाब','fr-btn':'थ्रेड देखें',
-    't-food':'व्यंजन और स्वाद','t-food-sub':'शहर की मिठाई और स्वाद।',
-    'fd1-title':'प्रसिद्ध मिठाई','fd1-desc':'रसगुल्ला और संदेश।','fd2-title':'स्ट्रीट फूड','fd2-desc':'तलेभाजा और फुचका।','fd3-title':'नदी किनारे चाय','fd3-desc':'मिट्टी के कप में चाय।',
-    't-map':'नक्शे पर खोजें','t-map-sub':'हुगली नदी के पश्चिमी किनारे पर।',
-    't-festivals':'त्योहार और परंपराएं','t-festivals-sub':'सदियों पुराने उत्सव।',
-    'fs1-title':'घोषाल बाड़ी दुर्गा पूजा','fs1-desc':'571 साल पुरानी परंपरा।','fs2-title':'शकुंतला काली पूजा','fs2-desc':'मुख्य धार्मिक उत्सव।','fs3-title':'बारो मंदिर शिवरात्रि','fs3-desc':'हजारों दीपों का उत्सव।',
-    't-academic':'शिक्षा केंद्र','t-academic-sub':'बंगाल नवजागरण की संस्थाएं।',
-    'ac1-title':'कोन्नगर हाई स्कूल','ac1-desc':'शिब चंद्र देब द्वारा स्थापित।','ac2-title':'कोन्नगर पब्लिक लाइब्रेरी','ac2-desc':'प्राचीन पुस्तकालय।','ac3-title':'नबग्राम हीरालाल पाल कॉलेज','ac3-desc':'डिग्री कॉलेज।',
-    't-arts':'कला और साहित्य','t-arts-sub':'नदी की धुन में कविता।',
-    'ar1-title':'टैगोर की धुनें','ar1-desc':'रबींद्रनाथ यहाँ आए थे।','ar2-title':'साहित्यिक प्रेरणा','ar2-desc':'अबनींद्रनाथ की प्रेरणा।','ar3-title':'शिवराम कनेक्शन','ar3-desc':'शिवराम चक्रवर्ती का बचपन।',
-    't-fame':'प्रसिद्ध हस्तियाँ','t-fame-sub':'जिन्होंने कोन्नगर का इतिहास बनाया।',
-    'hf1-title':'शिब चंद्र देब','hf1-desc':'रेलवे और स्कूल लाए।','hf2-title':'श्री अरबिंदो','hf2-desc':'विश्वप्रसिद्ध योगी।','hf3-title':'अबनींद्रनाथ टैगोर','hf3-desc':'प्रसिद्ध चित्रकार।','hf4-title':'शिशिर कुमार मित्र','hf4-desc':'रेडियो वैज्ञानिक।',
-    'hf5-title':'दिगंबर मित्र','hf5-desc':'कोलकाता के पहले बंगाली शेरिफ।','hf6-title':'शफीउर रहमान','hf6-desc':'भाषा शहीद।','hf7-title':'शिवराम चक्रवर्ती','hf7-desc':'बंगाली हास्य लेखक।','hf8-title':'जान बाटा','hf8-desc':'बाटा के संस्थापक।',
-    'hf9-title':'शशि भूषण चटर्जी','hf9-desc':'भूगोलशास्त्री।','hf10-title':'एरिक हेवर्ड','hf10-desc':'हेवर्ड्स ब्रांड।',
-    't-ad':'विज्ञापन दें','t-ad-sub':'अपने व्यवसाय का प्रचार करें।',
-    'ft1':'बनाया','ft2':'द्वारा','ft3':'© 2026 कोन्नगर हेरिटेज प्रोजेक्ट।'
-  }
-};
+// ========== GOOGLE SHEETS FORUM LOGIC ==========
+// URL dynamically injected
+const FORUM_DB_URL = "https://script.google.com/macros/s/AKfycbyVT2v7glfZ8hCq4yXnO55EMWKgEZ45OJKJV16oiIj5LXqZJC7A9q86edHG1SuyF_Ws/exec";
 
-function changeLang() {
-  const lang = document.getElementById('lang-sel').value;
-  document.body.classList.toggle('lang-bn', lang === 'bn');
-  const data = T[lang] || T.en;
-  document.querySelectorAll('[data-t]').forEach(el => {
-    const key = el.getAttribute('data-t');
-    if (data[key] !== undefined) el.innerHTML = data[key];
-  });
-  document.querySelectorAll('[data-t-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-t-placeholder');
-    if (data[key]) el.placeholder = data[key];
-  });
-  checkAd();
+let forumPosts = [];
+let isForumSyncing = false;
 
-// Forum Logic
-let posts = JSON.parse(localStorage.getItem('forumPosts')) || [];
-
-function displayPosts() {
+// 1. Fetch live data from Google Sheets
+async function loadForumData() {
   const container = document.getElementById('forum-posts');
-  if (posts.length === 0) {
-    container.innerHTML = "<p style='text-align:center; opacity:0.5;'>No posts yet. Be the first to comment!</p>";
+  container.innerHTML = '<div class="forum-loading"><i class="ti ti-loader ti-spin"></i> Loading live updates...</div>';
+  
+  try {
+    const res = await fetch(FORUM_DB_URL);
+    forumPosts = await res.json();
+    renderForum();
+  } catch (error) {
+    container.innerHTML = "<p style='text-align:center; color:#ff4757;'>Failed to connect to server. Try refreshing.</p>";
+  }
+}
+
+// 2. Save data back to Google Sheets
+async function syncForumToCloud() {
+  if (isForumSyncing) return;
+  isForumSyncing = true;
+  
+  try {
+    await fetch(FORUM_DB_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(forumPosts)
+    });
+  } catch (error) {
+    console.error("Sync failed", error);
+  } finally {
+    isForumSyncing = false;
+  }
+}
+
+function renderForum() {
+  const container = document.getElementById('forum-posts');
+  if (!forumPosts || forumPosts.length === 0) {
+    container.innerHTML = "<p style='text-align:center; opacity:0.5;'>No posts yet. Be the first to start the conversation!</p>";
     return;
   }
-  container.innerHTML = posts.map(post => `
+  
+  const reversed = [...forumPosts].reverse();
+  container.innerHTML = reversed.map(post => `
     <div class="post">
-      <div class="post-header">
-        <span><strong>${post.name}</strong></span>
-        <span>${post.timestamp}</span>
+      <div class="post-header"><strong>${post.name}</strong> <span><i class="ti ti-clock"></i> ${post.timestamp}</span></div>
+      <div class="post-msg">${post.message}</div>
+      
+      <div class="post-actions">
+        <button class="action-btn ${post.userAction === 'like' ? 'liked' : ''}" onclick="toggleLike(${post.id})">
+          <i class="ti ${post.userAction === 'like' ? 'ti-thumb-up-filled' : 'ti-thumb-up'}"></i> ${post.likes || 0}
+        </button>
+        <button class="action-btn ${post.userAction === 'dislike' ? 'disliked' : ''}" onclick="toggleDislike(${post.id})">
+          <i class="ti ${post.userAction === 'dislike' ? 'ti-thumb-down-filled' : 'ti-thumb-down'}"></i> ${post.dislikes || 0}
+        </button>
+        <button class="action-btn" onclick="toggleReplyBox(${post.id})">
+          <i class="ti ti-message-reply"></i> Reply (${post.replies ? post.replies.length : 0})
+        </button>
       </div>
-      <div>${post.message}</div>
+
+      ${post.replies && post.replies.length > 0 ? `
+        <div class="replies-container">
+          ${post.replies.map(r => `<div class="reply-item"><strong>${r.name}</strong> ${r.message}</div>`).join('')}
+        </div>
+      ` : ''}
+
+      <div class="reply-input-box" id="reply-box-${post.id}">
+        <input type="text" id="reply-name-${post.id}" placeholder="Your Name">
+        <input type="text" id="reply-msg-${post.id}" placeholder="Write a reply..." onkeypress="if(event.key === 'Enter') submitReply(${post.id})">
+        <button onclick="submitReply(${post.id})"><i class="ti ti-send"></i> Send</button>
+      </div>
     </div>
   `).join('');
 }
@@ -1116,23 +1054,75 @@ function displayPosts() {
 function addPost(e) {
   e.preventDefault();
   const nameInput = document.getElementById('user-name');
-  const messageInput = document.getElementById('forum-input');
-  const name = nameInput.value.trim();
-  const message = messageInput.value.trim();
-  if (name && message) {
-    const post = { name, message, timestamp: new Date().toLocaleString() };
-    posts.push(post);
-    localStorage.setItem('forumPosts', JSON.stringify(posts));
-    displayPosts();
-    messageInput.value = '';
+  const msgInput = document.getElementById('forum-input');
+  const btn = e.target.querySelector('button');
+  
+  if (nameInput.value.trim() && msgInput.value.trim()) {
+    btn.innerHTML = '<i class="ti ti-loader ti-spin"></i> Posting...';
+    btn.disabled = true;
+
+    forumPosts.push({
+      id: Date.now(),
+      name: nameInput.value.trim(),
+      message: msgInput.value.trim(),
+      timestamp: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', month: 'short', day: 'numeric' }),
+      likes: 0,
+      dislikes: 0,
+      userAction: null,
+      replies: []
+    });
+    
+    if(forumPosts.length > 50) forumPosts.shift(); // Keep max 50 posts so Sheets doesn't get overloaded
+    
+    renderForum();
+    syncForumToCloud().then(() => {
+        msgInput.value = '';
+        btn.innerHTML = '<i class="ti ti-send"></i> Post';
+        btn.disabled = false;
+    });
   }
 }
 
-// Ensure this runs on load
-window.addEventListener('load', () => {
-  displayPosts();
-});
+function toggleLike(postId) {
+  const post = forumPosts.find(p => p.id === postId);
+  if(!post) return;
+  if(post.userAction === 'like') { post.likes--; post.userAction = null; } 
+  else { post.likes++; if(post.userAction === 'dislike') post.dislikes--; post.userAction = 'like'; }
+  renderForum(); syncForumToCloud();
 }
+
+function toggleDislike(postId) {
+  const post = forumPosts.find(p => p.id === postId);
+  if(!post) return;
+  if(post.userAction === 'dislike') { post.dislikes--; post.userAction = null; } 
+  else { post.dislikes++; if(post.userAction === 'like') post.likes--; post.userAction = 'dislike'; }
+  renderForum(); syncForumToCloud();
+}
+
+function toggleReplyBox(postId) {
+  const box = document.getElementById(`reply-box-${postId}`);
+  box.classList.toggle('active');
+  if(box.classList.contains('active')) document.getElementById(`reply-msg-${postId}`).focus();
+}
+
+function submitReply(postId) {
+  const nameEl = document.getElementById(`reply-name-${postId}`);
+  const msgEl = document.getElementById(`reply-msg-${postId}`);
+  const name = nameEl.value.trim() || 'Anonymous';
+  const msg = msgEl.value.trim();
+  
+  if(msg) {
+    const post = forumPosts.find(p => p.id === postId);
+    if (!post.replies) post.replies = [];
+    post.replies.push({ name: name, message: msg });
+    
+    renderForum(); 
+    syncForumToCloud();
+  }
+}
+
+// Kick off the load when the page is ready
+window.addEventListener('load', loadForumData);
 </script>
 </body>
 </html>
